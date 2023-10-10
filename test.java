@@ -3,3 +3,9 @@ public class test {
         System.out.println("test");
     }
 }
+
+class application {
+    void start(){
+        System.out.println("Start");
+    }
+}
