@@ -1,20 +1,38 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public class Diceroller {
-    
-    void determineNumber() {
-        Random random = new Random();
 
-        for (int i = 0; i < 100; i++) {
-            int dice1 = random.nextInt(6) + 1;
-            int dice2 = random.nextInt(6) + 1;
-            int sumdice = dice1 + dice2;
+    private int dice1 = 0;
+    private int dice2 = 0;
 
-            System.out.println(sumdice);
-        }
+    public Diceroller() {
+
     }
 
-    public static void main(String[] args) {
-        new Diceroller().determineNumber();
+    void rollDice() {
+        Random random = new Random();
+        this.dice1 = random.nextInt(6) + 1;
+        this.dice2 = random.nextInt(6) + 1;
+    }
+
+    int getSum() {
+        return this.dice1 + this.dice2;
+    }
+
+
+    void render(Graphics g, JPanel jPanel) {
+        //todo:
+        File file = new File("images/emptydice.png");
+        try {
+            Image image = ImageIO.read(file);
+            g.drawImage(image, 10, 10, jPanel);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
