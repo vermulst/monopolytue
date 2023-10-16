@@ -14,7 +14,7 @@ public class Game {
 
     public void start() {
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setSize(300, 300);
+        this.frame.setSize(1920, 1080);
         this.frame.setVisible(true);
     }
     
