@@ -1,3 +1,7 @@
+package me.tue.monopolytue;
+
+import me.tue.monopolytue.frame.Game;
+
 public class Main {
 
     

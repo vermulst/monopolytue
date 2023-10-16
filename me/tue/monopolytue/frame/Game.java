@@ -1,3 +1,5 @@
+package me.tue.monopolytue.frame;
+
 import javax.swing.JFrame;
 
 public class Game {

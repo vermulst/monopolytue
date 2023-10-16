@@ -1,3 +1,5 @@
+package me.tue.monopolytue.board;
+
 public enum SquareGroup {
     BROWN,
     LIGHT_BLUE,
@@ -7,6 +9,7 @@ public enum SquareGroup {
     YELLOW,
     GREEN,
     BLUE,
+    CHANCE,
     CORNER;
 
 

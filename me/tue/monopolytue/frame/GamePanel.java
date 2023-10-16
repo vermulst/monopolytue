@@ -1,6 +1,10 @@
+package me.tue.monopolytue.frame;
+
+import me.tue.monopolytue.turn.Diceroller;
+import me.tue.monopolytue.board.Board;
+
 import java.awt.Graphics;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {

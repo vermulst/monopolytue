@@ -1,10 +1,13 @@
+package me.tue.monopolytue.board;
+
+import me.tue.monopolytue.turn.Participant;
+import me.tue.monopolytue.utils.Location;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.ThreadLocalRandom;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -31,8 +34,10 @@ public class Square {
     public void render(Graphics g, JPanel panel) {
         //todo:
         File file = new File("images/emptysquare.png");
-        if (this.squareGroup.equals(SquareGroup.CORNER)) {
+        if (SquareGroup.CORNER.equals(this.getSquareGroup())) {
             file = new File("images/emptycorner.png");
+        } else if (SquareGroup.CHANCE.equals(this.getSquareGroup())) {
+            file = new File("images/chancecard.png");
         }
         try {
             BufferedImage image = ImageIO.read(file);
@@ -60,7 +65,7 @@ public class Square {
         BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = rotated.createGraphics();
         AffineTransform at = new AffineTransform();
-        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
+        at.translate((double) (newWidth - w) / 2, (double) (newHeight - h) / 2);
 
         int x = w / 2;
         int y = h / 2;
@@ -71,5 +76,13 @@ public class Square {
         g2d.dispose();
 
         return rotated;
+    }
+
+    public Participant getOwner() {
+        return owner;
+    }
+
+    public SquareGroup getSquareGroup() {
+        return squareGroup;
     }
 }
