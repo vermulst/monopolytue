@@ -16,7 +16,7 @@ public class GamePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        this.board.render(g);
+        this.board.render(g, this);
         this.diceroller.render(g, this);
     }
 }
