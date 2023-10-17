@@ -25,16 +25,34 @@ public class Diceroller {
     int getSum() {
         return this.dice1 + this.dice2;
     }
-
-
+  
     public void render(Graphics g, JPanel jPanel) {
-        //todo:
-        File file = new File("images/emptydice.png");
+        // Load the empty dice image
         try {
-            Image image = ImageIO.read(file);
-            g.drawImage(image, 1700, 0, jPanel);
+            Image emptyDiceImage = ImageIO.read(new File("images/emptydice.png"));
+            
+            // Calculate the coordinates for the two dice
+            int x1 = jPanel.getWidth() - 100; 
+            int y = 10;
+            int x2 = jPanel.getWidth() - 50;   
+            
+            // Draw the first empty dice image
+            g.drawImage(emptyDiceImage, x1, y, jPanel);
+            
+            // Draw the value of dice1 in the first dice
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Arial", Font.PLAIN, 60));
+            g.drawString(Integer.toString(dice1), x1 + 35, y + 35);
+            
+            // Draw the second empty dice image
+            g.drawImage(emptyDiceImage, x2, y, jPanel);
+            
+            // Draw the value of dice2 in the second dice
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Arial", Font.PLAIN, 60));
+            g.drawString(Integer.toString(dice2), x2 + 35, y + 35);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+}
 }
