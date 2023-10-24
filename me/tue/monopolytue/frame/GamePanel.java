@@ -2,6 +2,7 @@ package me.tue.monopolytue.frame;
 
 import me.tue.monopolytue.board.Board;
 import me.tue.monopolytue.turn.Diceroller;
+import me.tue.monopolytue.turn.NextTurnButton;
 import me.tue.monopolytue.turn.Participant;
 import me.tue.monopolytue.utils.Position;
 
@@ -13,11 +14,13 @@ public class GamePanel extends JPanel {
     
     private Board board;
     private Diceroller diceroller;
+    private NextTurnButton nextTurnButton;
 
     public GamePanel(JFrame frame, Participant[] participants) {
         this.setSize(frame.getSize());
         this.board = new Board(participants);
         this.diceroller = new Diceroller(this.board);
+        this.nextTurnButton = new NextTurnButton(this.diceroller);
 
         FlowLayout flowLayout = new FlowLayout();
         flowLayout.setAlignment(FlowLayout.RIGHT);
@@ -29,7 +32,10 @@ public class GamePanel extends JPanel {
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
 
         JPanel middlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel rightPanel = new JPanel();
+
+        BoxLayout boxLayout = new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS);
+        rightPanel.setLayout(boxLayout);
 
         //add components to GamePanel
         for (Participant participant : participants) {
@@ -37,6 +43,7 @@ public class GamePanel extends JPanel {
         }
         middlePanel.add(this.board);
         rightPanel.add(this.diceroller);
+        rightPanel.add(this.nextTurnButton);
 
         this.add(leftPanel);
         this.add(middlePanel);
