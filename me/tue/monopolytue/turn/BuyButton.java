@@ -8,6 +8,7 @@ import javax.swing.JButton;
 
 import me.tue.monopolytue.board.Board;
 import me.tue.monopolytue.board.Square;
+import me.tue.monopolytue.board.SquareGroup;
 
 public class BuyButton extends JButton implements MouseListener {
     Diceroller diceroller;
@@ -17,7 +18,8 @@ public class BuyButton extends JButton implements MouseListener {
     void buyButton() {
         Participant participant = board.getParticipants()[this.diceroller.participantIndex];
         Square square = participant.getCurrentSquare(board);
-        if (participant.balance > )
+        
+        if (participant.balance > SquareGroup.)
     }
 
 
