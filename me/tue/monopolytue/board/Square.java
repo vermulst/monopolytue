@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class Square {
 
@@ -31,7 +31,13 @@ public class Square {
     /**
      * Render the square onto the panel
      */
-    public void render(Graphics g, JPanel panel) {
+    public void render(Graphics g, JComponent component) {
+        BufferedImage image = this.getImage();
+        image = this.rotateImageByDegrees(image, this.getLocation().getDegreeRotation(), component);
+        g.drawImage(image, (int) this.location.getX(), (int) this.location.getY(), component);
+    }
+
+    public BufferedImage getImage() {
         File file = new File("images/emptysquare.png");
         if (SquareGroup.CORNER.equals(this.getSquareGroup())) {
             file = new File("images/emptycorner.png");
@@ -40,10 +46,9 @@ public class Square {
         }
         try {
             BufferedImage image = ImageIO.read(file);
-            image = this.rotateImageByDegrees(image, this.getLocation().getDegreeRotation(), panel);
-            g.drawImage(image, (int) this.location.getX(), (int) this.location.getY(), panel);
+            return image;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -52,7 +57,7 @@ public class Square {
     }
 
 
-    public BufferedImage rotateImageByDegrees(BufferedImage img, double angle, JPanel panel) {
+    public BufferedImage rotateImageByDegrees(BufferedImage img, double angle, JComponent component) {
         if (angle == 0) return img;
         double rads = Math.toRadians(angle);
         double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
@@ -71,7 +76,7 @@ public class Square {
 
         at.rotate(rads, x, y);
         g2d.setTransform(at);
-        g2d.drawImage(img, 0, 0, panel);
+        g2d.drawImage(img, 0, 0, component);
         g2d.dispose();
 
         return rotated;

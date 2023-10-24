@@ -1,25 +1,59 @@
 package me.tue.monopolytue.turn;
 
+import me.tue.monopolytue.board.Board;
+import me.tue.monopolytue.utils.Position;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-public class Diceroller {
+public class Diceroller extends JComponent implements MouseListener {
 
     private int dice1 = 0;
     private int dice2 = 0;
 
-    public Diceroller() {
+    private BufferedImage image;
 
+    private Board board;
+    private int participantIndex = 0;
+
+    public Diceroller(Board board) {
+        this.addMouseListener(this);
+        try {
+            this.image = ImageIO.read(new File("images/dices/emptydice.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.board = board;
+    }
+    public Diceroller(Position position, Board board) {
+        this.addMouseListener(this);
+        try {
+            this.image = ImageIO.read(new File("images/dices/emptydice.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.board = board;
     }
 
-    void rollDice() {
+    public void rollDice() {
         Random random = new Random();
         this.dice1 = random.nextInt(6) + 1;
         this.dice2 = random.nextInt(6) + 1;
+        this.board.getParticipants()[this.participantIndex].moveSquares(this.board, this.getSum());
+    }
+
+    public void nextTurn() {
+        this.participantIndex++;
+        if (this.participantIndex == this.board.getParticipants().length) {
+            this.participantIndex = 0;
+        }
     }
 
     int getSum() {
@@ -27,14 +61,71 @@ public class Diceroller {
     }
 
 
-    public void render(Graphics g, JPanel jPanel) {
-        //todo:
-        File file = new File("images/emptydice.png");
+    @Override
+    public void paintComponent(Graphics g) {
         try {
-            Image image = ImageIO.read(file);
-            g.drawImage(image, 1700, 0, jPanel);
+            if (this.getDice1() == 0) {
+                // Draw the first empty dice image
+                g.drawImage(this.image, 0, 0, this);
+                // Draw the second empty dice image
+                g.drawImage(this.image, image.getWidth(), 0, this);
+                return;
+            }
+            BufferedImage image1 = ImageIO.read(new File("images/dices/Dice-" + this.getDice1() + "-b.svg.png"));
+            BufferedImage image2 = ImageIO.read(new File("images/dices/Dice-" + this.getDice2() + "-b.svg.png"));
+
+            // Draw the first empty dice image
+            g.drawImage(image1, 0, 0, this);
+            // Draw the second empty dice image
+            g.drawImage(image2, image.getWidth(), 0, this);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(this.getImage().getWidth() * 2, this.getImage().getHeight());
+    }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        this.rollDice();
+        this.nextTurn();
+        this.repaint();
+        this.board.repaint();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+
+    public int getDice1() {
+        return dice1;
+    }
+
+    public int getDice2() {
+        return dice2;
+    }
+
+    public BufferedImage getImage() {
+        return image;
     }
 }
