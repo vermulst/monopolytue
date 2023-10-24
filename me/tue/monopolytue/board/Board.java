@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class Board extends JComponent {
+public class Board extends JPanel {
 
 
     private Square[] squares;

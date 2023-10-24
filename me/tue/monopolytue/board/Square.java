@@ -1,5 +1,6 @@
 package me.tue.monopolytue.board;
 
+import me.tue.monopolytue.Chancecard;
 import me.tue.monopolytue.turn.Participant;
 import me.tue.monopolytue.utils.Location;
 
@@ -28,6 +29,14 @@ public class Square {
         this.owner = owner;
     }
 
+
+    public void onLand(Board board) {
+        if (this.squareGroup.equals(SquareGroup.CHANCE)) {
+            Chancecard chancecard = new Chancecard();
+            board.add(chancecard);
+            chancecard.pullChancecard();
+        }
+    }
     /**
      * Render the square onto the panel
      */

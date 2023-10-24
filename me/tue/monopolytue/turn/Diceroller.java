@@ -47,6 +47,8 @@ public class Diceroller extends JComponent implements MouseListener {
         this.dice1 = random.nextInt(6) + 1;
         this.dice2 = random.nextInt(6) + 1;
         this.board.getParticipants()[this.participantIndex].moveSquares(this.board, this.getSum());
+        this.board.repaint();
+        this.board.getParticipants()[this.participantIndex].getCurrentSquare(this.board).onLand(this.board);
     }
 
     public void nextTurn() {
@@ -91,9 +93,8 @@ public class Diceroller extends JComponent implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {
         this.rollDice();
-        this.nextTurn();
+        //this.nextTurn(); todo: nextturnbutton
         this.repaint();
-        this.board.repaint();
     }
 
     @Override
