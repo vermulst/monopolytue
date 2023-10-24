@@ -32,7 +32,6 @@ public class Square {
      * Render the square onto the panel
      */
     public void render(Graphics g, JPanel panel) {
-        //todo:
         File file = new File("images/emptysquare.png");
         if (SquareGroup.CORNER.equals(this.getSquareGroup())) {
             file = new File("images/emptycorner.png");
