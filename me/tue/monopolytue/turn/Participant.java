@@ -13,7 +13,7 @@ import java.io.IOException;
 public class Participant extends JComponent {
 
     private int participantID;
-    private int balance = 1500;
+    public int balance = 1500;
     private int positionOnBoard = 0;
     private boolean bankrupt = false;
 

@@ -3,9 +3,9 @@ package me.tue.monopolytue;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Chancecard extends JComponent {
-    Random random = new Random(0);
 
     String[] stringCards = new String[5];
 
@@ -38,7 +38,7 @@ public class Chancecard extends JComponent {
     }
 
     public void pullChancecard() {
-        int number = random.nextInt(5);
+        int number = ThreadLocalRandom.current().nextInt(5);
         System.out.println(this.stringCards[number]);
         pulledCard = this.stringCards[number];
     }

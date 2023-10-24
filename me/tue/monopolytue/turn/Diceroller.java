@@ -21,7 +21,8 @@ public class Diceroller extends JComponent implements MouseListener {
     private BufferedImage image;
 
     private Board board;
-    private int participantIndex = 0;
+    public int participantIndex = 0;
+    public boolean isRolled = false;
 
     public Diceroller(Board board) {
         this.addMouseListener(this);
@@ -43,12 +44,14 @@ public class Diceroller extends JComponent implements MouseListener {
     }
 
     public void rollDice() {
+        if (this.isRolled) return;
         Random random = new Random();
         this.dice1 = random.nextInt(6) + 1;
         this.dice2 = random.nextInt(6) + 1;
         this.board.getParticipants()[this.participantIndex].moveSquares(this.board, this.getSum());
         this.board.repaint();
         this.board.getParticipants()[this.participantIndex].getCurrentSquare(this.board).onLand(this.board);
+        this.isRolled = true;
     }
 
     public void nextTurn() {
@@ -57,6 +60,8 @@ public class Diceroller extends JComponent implements MouseListener {
             this.participantIndex = 0;
         }
     }
+
+
 
     int getSum() {
         return this.dice1 + this.dice2;
