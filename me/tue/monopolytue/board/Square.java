@@ -30,13 +30,16 @@ public class Square {
     }
 
 
-    public void onLand(Board board) {
+    public void onLand(Board board, Participant participant) {
         if (this.squareGroup.equals(SquareGroup.CHANCE)) {
             Chancecard chancecard = new Chancecard();
             board.add(chancecard);
             board.repaint();
             chancecard.pullChancecard();
         }
+        if (this.getOwner() != null && this.getOwner() != participant) {
+            participant.transferAmount(this.getOwner(), (int) Math.ceil((double)this.getSquareGroup().getPrice() * 0.2));
+        } 
     }
 
 

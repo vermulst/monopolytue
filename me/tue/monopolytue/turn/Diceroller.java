@@ -48,9 +48,10 @@ public class Diceroller extends JComponent implements MouseListener {
         Random random = new Random();
         this.dice1 = random.nextInt(6) + 1;
         this.dice2 = random.nextInt(6) + 1;
-        this.board.getParticipants()[this.participantIndex].moveSquares(this.board, this.getSum());
+        Participant participant = this.board.getParticipants()[this.participantIndex];
+        participant.moveSquares(this.board, this.getSum());
         this.board.repaint();
-        this.board.getParticipants()[this.participantIndex].getCurrentSquare(this.board).onLand(this.board);
+        participant.getCurrentSquare(this.board).onLand(this.board, participant);
         this.isRolled = true;
     }
 

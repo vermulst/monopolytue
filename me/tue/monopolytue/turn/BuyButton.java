@@ -14,47 +14,50 @@ public class BuyButton extends JButton implements MouseListener {
     Diceroller diceroller;
     Board board;
 
+    public BuyButton(Board board, Diceroller diceroller) {
+        super("Buy Card");
+        this.diceroller = diceroller;
+        this.addMouseListener(this);
+        this.board = board;
+    }
 
     void buyButton() {
         Participant participant = board.getParticipants()[this.diceroller.participantIndex];
         Square square = participant.getCurrentSquare(board);
-        
-        if (participant.balance > SquareGroup.)
+        if (square.getOwner() != null) {
+            return;
+        }
+
+        if (participant.balance >= square.getSquareGroup().getPrice()) {
+            participant.removeToBalance(square.getSquareGroup().getPrice());
+            square.setOwner(participant);
+        }
     }
 
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseClicked'");
+        this.buyButton();
     }
 
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mousePressed'");
     }
 
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseReleased'");
     }
 
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseEntered'");
     }
 
 
     @Override
     public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseExited'");
     }
 
 }

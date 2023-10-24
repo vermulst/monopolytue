@@ -1,6 +1,7 @@
 package me.tue.monopolytue.frame;
 
 import me.tue.monopolytue.board.Board;
+import me.tue.monopolytue.turn.BuyButton;
 import me.tue.monopolytue.turn.Diceroller;
 import me.tue.monopolytue.turn.NextTurnButton;
 import me.tue.monopolytue.turn.Participant;
@@ -14,12 +15,14 @@ public class GamePanel extends JPanel {
     
     private Board board;
     private Diceroller diceroller;
+    private BuyButton buyButton;
     private NextTurnButton nextTurnButton;
 
     public GamePanel(JFrame frame, Participant[] participants) {
         this.setSize(frame.getSize());
         this.board = new Board(participants);
         this.diceroller = new Diceroller(this.board);
+        this.buyButton = new BuyButton(board, diceroller);
         this.nextTurnButton = new NextTurnButton(this.diceroller);
 
         FlowLayout flowLayout = new FlowLayout();
@@ -43,6 +46,7 @@ public class GamePanel extends JPanel {
         }
         middlePanel.add(this.board);
         rightPanel.add(this.diceroller);
+        rightPanel.add(this.buyButton);
         rightPanel.add(this.nextTurnButton);
 
         this.add(leftPanel);
