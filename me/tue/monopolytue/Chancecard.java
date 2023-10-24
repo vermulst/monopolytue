@@ -28,6 +28,7 @@ public class Chancecard extends JComponent {
         g.setColor(new Color(0, 0, 0));
         g.drawRect(0, 0, 200, 100);
         g.fillRect(0, 0, 200, 100);
+        g.setColor(new Color(255, 255, 255));
         g.drawString(pulledCard, 0, 100);
         System.out.println("test");
     }
@@ -41,5 +42,6 @@ public class Chancecard extends JComponent {
         int number = ThreadLocalRandom.current().nextInt(5);
         System.out.println(this.stringCards[number]);
         pulledCard = this.stringCards[number];
+        this.repaint();
     }
 }
