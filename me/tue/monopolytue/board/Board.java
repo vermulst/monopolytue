@@ -14,6 +14,7 @@ public class Board extends JComponent {
 
     private Square[] squares;
 
+    // must be odd for a proper board
     private static final int SQUARES_PER_ROW = 7;
 
     // does not allow more than ((SQUARES_PER_ROW - 3) / 2)
@@ -34,6 +35,19 @@ public class Board extends JComponent {
 
     public int getTotalSquareAmount() {
         return this.squares.length;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        for (int i = 0; i < squares.length; i++) {
+            if (squares[i] == null) continue;
+            squares[i].render(g, this);
+        }
+        for (int i = 0; i < participants.length; i++) {
+            if (participants[i] == null) continue;
+            participants[i].renderPawn(g, this);
+        }
     }
 
     public void placeSquares() {
@@ -80,18 +94,6 @@ public class Board extends JComponent {
         return new Dimension(width, width);
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        for (int i = 0; i < squares.length; i++) {
-            if (squares[i] == null) continue;
-            squares[i].render(g, this);
-        }
-        for (int i = 0; i < participants.length; i++) {
-            if (participants[i] == null) continue;
-            participants[i].render(g, this);
-        }
-    }
 
     public Square[] getSquares() {
         return squares;

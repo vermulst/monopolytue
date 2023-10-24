@@ -4,69 +4,75 @@ import me.tue.monopolytue.board.Board;
 import me.tue.monopolytue.board.Square;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Participant {
+public class Participant extends JComponent {
 
     private int participantID;
-    private int balance;
+    private int balance = 1500;
     private int positionOnBoard = 0;
     private boolean bankrupt = false;
 
-    //todo: add image
-    private static final int IMG_WIDTH = 30;
-    private static final int IMG_HEIGHT = 60;
+
+    private static final int REWARD_PASSING_START = 200;
 
     public Participant(int id) {
         this.participantID = id;
     }
 
-    public void moveSquares(Board board, int squares) {
-        this.positionOnBoard += squares;
-        if (this.positionOnBoard >= board.getTotalSquareAmount()) {
-            this.positionOnBoard -= board.getTotalSquareAmount();
-        }
+
+    // draw the balance counter
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        //if (g.getFont() == null) {
+            g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+        //}
+        Graphics2D graphics2D = (Graphics2D) g;
+        graphics2D.drawString("Player " + this.participantID + ": " + String.valueOf(balance), 0, 50);
     }
 
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(300, 75);
+    }
 
-
-    public void render(Graphics g, Board board) {
+    //draw the pawn onto the existing board
+    public void renderPawn(Graphics g, Board board) {
 
         BufferedImage image = this.getImage();
         Square currentSquare = this.getCurrentSquare(board);
         if (currentSquare == null) return;
 
-        int playerIndex;
+        int playerIndex = 0;
         for (int i = 0; i < board.getParticipants().length; i++) {
-            if (this.equals(board.getParticipants()[i])) {
-                playerIndex = i;
+            if (!board.getParticipants()[i].getCurrentSquare(board).equals(currentSquare)) continue;
+            if (!this.equals(board.getParticipants()[i])) {
+                playerIndex++;
+            }
+            else {
                 break;
             }
         }
 
-        
-        int balanceX = 10;
+        int x = (int) currentSquare.getLocation().getX() + 15;
+        int y = (int) currentSquare.getLocation().getY() + 25;
 
-        int x = (int) currentSquare.getLocation().getX() + 5;
-        int y = (int) currentSquare.getLocation().getY() + 30;
-
-        for (int i = 0; i < board.getParticipants().length; i++) {
-            if (board.getParticipants()[i].positionOnBoard != this.positionOnBoard) continue;
-            if (this.equals(board.getParticipants()[i])) {
-                g.drawImage(image, x, y, board);
-                break;
-            } else {
-                x += this.getImage().getWidth() + 5;
-                if (x - currentSquare.getLocation().getX() > currentSquare.getImage().getWidth()) {
-                    x = (int) currentSquare.getLocation().getX() + 5;
-                    y += this.getImage().getHeight() + 5;
-                }
+        for (int i = 0; i < playerIndex; i++) {
+            x += this.getImage().getWidth() + 5;
+            if (x - currentSquare.getLocation().getX() > currentSquare.getImage().getWidth()) {
+                x = (int) currentSquare.getLocation().getX() + 5;
+                y += this.getImage().getHeight() + 5;
             }
         }
+
+        g.drawImage(image, x, y, board);
     }
+
 
 
     public Square getCurrentSquare(Board board) {
@@ -84,13 +90,23 @@ public class Participant {
     }
 
 
+    public void moveSquares(Board board, int squares) {
+        this.positionOnBoard += squares;
+        if (this.positionOnBoard >= board.getTotalSquareAmount()) {
+            this.addToBalance(REWARD_PASSING_START);
+            this.positionOnBoard -= board.getTotalSquareAmount();
+        }
+    }
+
     public void addToBalance(int amount) {
         this.balance += amount;
+        this.repaint();
     }
 
     public void removeToBalance(int amount) {
         this.balance -= amount;
         this.checkBankrupt();
+        this.repaint();
     }
 
     public void transferAmount(Participant receiver, int amount) {

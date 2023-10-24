@@ -15,17 +15,32 @@ public class GamePanel extends JPanel {
     private Diceroller diceroller;
 
     public GamePanel(JFrame frame, Participant[] participants) {
-        FlowLayout layout = new FlowLayout();
-        layout.setAlignment(FlowLayout.RIGHT);
-        layout.setVgap(100);
-        layout.setHgap(100);
-        this.setLayout(layout);
-        this.setLocation(0, 0);
         this.setSize(frame.getSize());
         this.board = new Board(participants);
         this.diceroller = new Diceroller(this.board);
-        this.add(this.board);
-        this.add(this.diceroller);
+
+        FlowLayout flowLayout = new FlowLayout();
+        flowLayout.setAlignment(FlowLayout.RIGHT);
+        flowLayout.setVgap(100);
+        flowLayout.setHgap(100);
+        this.setLayout(flowLayout);
+
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
+
+        JPanel middlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        //add components to GamePanel
+        for (Participant participant : participants) {
+            leftPanel.add(participant);
+        }
+        middlePanel.add(this.board);
+        rightPanel.add(this.diceroller);
+
+        this.add(leftPanel);
+        this.add(middlePanel);
+        this.add(rightPanel);
     }
 
 
