@@ -3,9 +3,9 @@ package me.tue.monopolytue;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Chancecard extends JComponent {
-    Random random = new Random(0);
 
     String[] stringCards = new String[5];
 
@@ -28,6 +28,7 @@ public class Chancecard extends JComponent {
         g.setColor(new Color(0, 0, 0));
         g.drawRect(0, 0, 200, 100);
         g.fillRect(0, 0, 200, 100);
+        g.setColor(new Color(255, 255, 255));
         g.drawString(pulledCard, 0, 100);
         System.out.println("test");
     }
@@ -38,8 +39,9 @@ public class Chancecard extends JComponent {
     }
 
     public void pullChancecard() {
-        int number = random.nextInt(5);
+        int number = ThreadLocalRandom.current().nextInt(5);
         System.out.println(this.stringCards[number]);
         pulledCard = this.stringCards[number];
+        this.repaint();
     }
 }

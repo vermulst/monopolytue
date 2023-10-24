@@ -34,9 +34,12 @@ public class Square {
         if (this.squareGroup.equals(SquareGroup.CHANCE)) {
             Chancecard chancecard = new Chancecard();
             board.add(chancecard);
+            board.repaint();
             chancecard.pullChancecard();
         }
     }
+
+
     /**
      * Render the square onto the panel
      */
