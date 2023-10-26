@@ -37,7 +37,7 @@ public class Square {
             chancecard.pullChancecard();
         }
         if (this.getOwner() != null && this.getOwner() != participant) {
-            participant.transferAmount(this.getOwner(), (int) Math.ceil((double)this.getSquareGroup().getPrice() * 0.2));
+            participant.transferAmount(this.getOwner(), this.getSquareGroup().getRent());
         } 
     }
 

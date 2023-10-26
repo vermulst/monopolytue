@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
 
 public class Participant extends JComponent {
 
@@ -16,12 +17,24 @@ public class Participant extends JComponent {
     public int balance = 1500;
     private int positionOnBoard = 0;
     private boolean bankrupt = false;
+    private boolean turn = false;
 
 
     private static final int REWARD_PASSING_START = 200;
 
     public Participant(int id) {
         this.participantID = id;
+    }
+
+    public void setTurn(boolean turn) {
+        this.turn = turn;
+        this.repaint();
+    }
+
+    private String formatted(int number) {
+        String formattedNumber = NumberFormat.getInstance().format(number);
+        formattedNumber = formattedNumber.replaceAll(",", ".");
+        return formattedNumber;
     }
 
 
@@ -39,11 +52,15 @@ public class Participant extends JComponent {
         graphics2D.setColor(playerColor);
         String playerText = "Player " + this.participantID;
 
-        graphics2D.drawString(playerText, 0, 50);
+        graphics2D.drawString(playerText, 10, 50);
         int width = g.getFontMetrics().stringWidth(playerText);
 
         graphics2D.setColor(new Color(0, 0, 0));
-        graphics2D.drawString(": " + balance, width, 50);
+        graphics2D.drawString(": " + formatted(balance), 10 + width, 50);
+
+        if (this.turn) {
+            graphics2D.drawRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
+        }
     }
 
 
@@ -83,7 +100,7 @@ public class Participant extends JComponent {
 
         for (int i = 0; i < playerIndex; i++) {
             x += this.getImage().getWidth() + 5;
-            if (x - currentSquare.getLocation().getX() + this.getImage().getWidth() > currentSquare.getImage().getWidth()) {
+            if (x - currentSquare.getLocation().getX() > currentSquare.getImage().getWidth()) {
                 x = (int) currentSquare.getLocation().getX() + 15;
                 y += this.getImage().getHeight() + 5;
             }
@@ -146,5 +163,8 @@ public class Participant extends JComponent {
             this.bankrupt = true;
         }
     }
-    
+
+    public int getParticipantID() {
+        return participantID;
+    }
 }

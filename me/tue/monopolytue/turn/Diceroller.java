@@ -24,6 +24,8 @@ public class Diceroller extends JComponent implements MouseListener {
     public int participantIndex = 0;
     public boolean isRolled = false;
 
+    private PriceCard priceCard;
+
     public Diceroller(Board board) {
         this.addMouseListener(this);
         try {
@@ -43,6 +45,20 @@ public class Diceroller extends JComponent implements MouseListener {
         this.board = board;
     }
 
+    public void emptyDice() {
+        this.dice1 = 0;
+        this.dice2 = 0;
+        this.repaint();
+    }
+
+    public void setPriceCard(PriceCard priceCard) {
+        this.priceCard = priceCard;
+    }
+
+    public PriceCard getPriceCard() {
+        return priceCard;
+    }
+
     public void rollDice() {
         if (this.isRolled) return;
         Random random = new Random();
@@ -53,13 +69,18 @@ public class Diceroller extends JComponent implements MouseListener {
         this.board.repaint();
         participant.getCurrentSquare(this.board).onLand(this.board, participant);
         this.isRolled = true;
+        this.getPriceCard().update();
     }
 
     public void nextTurn() {
+        Participant previousParticipant = this.board.getParticipants()[this.participantIndex];
         this.participantIndex++;
         if (this.participantIndex == this.board.getParticipants().length) {
             this.participantIndex = 0;
         }
+        Participant newParticipant = this.board.getParticipants()[this.participantIndex];
+        previousParticipant.setTurn(false);
+        newParticipant.setTurn(true);
     }
 
 

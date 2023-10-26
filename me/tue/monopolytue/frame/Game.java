@@ -16,6 +16,7 @@ public class Game {
     public Game() {
 
         this.participants = new Participant[]{new Player(1), new Participant(2), new Participant(3), new Participant(4)};
+        this.participants[0].setTurn(true);
 
         this.frame = new JFrame("Monopoly");
         this.frame.setSize(1920, 1080);

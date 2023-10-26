@@ -22,7 +22,8 @@ public class BuyButton extends JButton implements MouseListener {
         this.board = board;
     }
 
-    void buyButton() {
+    public void buyButton() {
+        if (!this.diceroller.isRolled) return;
         Participant participant = board.getParticipants()[this.diceroller.participantIndex];
         Square square = participant.getCurrentSquare(board);
         if (square.getOwner() != null) {
@@ -43,7 +44,6 @@ public class BuyButton extends JButton implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        this.buyButton();
     }
 
 
@@ -54,6 +54,7 @@ public class BuyButton extends JButton implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        this.buyButton();
     }
 
 

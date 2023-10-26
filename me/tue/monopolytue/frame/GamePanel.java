@@ -25,8 +25,9 @@ public class GamePanel extends JPanel {
         this.board = new Board(participants);
         this.diceroller = new Diceroller(this.board);
         this.buyButton = new BuyButton(board, diceroller);
+        this.priceCard = new PriceCard(this.diceroller, this.board);
+        this.diceroller.setPriceCard(this.priceCard);
         this.nextTurnButton = new NextTurnButton(this.diceroller);
-        this.priceCard = new PriceCard();
 
         FlowLayout flowLayout = new FlowLayout();
         flowLayout.setAlignment(FlowLayout.RIGHT);
@@ -50,10 +51,11 @@ public class GamePanel extends JPanel {
         middlePanel.add(this.board);
         rightPanel.add(this.diceroller);
         rightPanel.add(Box.createRigidArea(new Dimension(0,40)));
+        rightPanel.add(this.priceCard);
+        rightPanel.add(Box.createRigidArea(new Dimension(0,20)));
         rightPanel.add(this.buyButton);
         rightPanel.add(Box.createRigidArea(new Dimension(0,20)));
         rightPanel.add(this.nextTurnButton);
-        rightPanel.add(this.priceCard);
 
         this.add(leftPanel);
         this.add(middlePanel);

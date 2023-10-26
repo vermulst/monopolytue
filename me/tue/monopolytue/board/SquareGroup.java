@@ -3,10 +3,10 @@ package me.tue.monopolytue.board;
 import java.util.concurrent.SynchronousQueue;
 
 public enum SquareGroup {
-    RED(100),
-    YELLOW(150),
-    GREEN(200),
-    BLUE(250),
+    RED(150),
+    YELLOW(225),
+    GREEN(300),
+    BLUE(375),
     CHANCE(0),
     CORNER(0);
 
@@ -18,5 +18,9 @@ public enum SquareGroup {
 
     public int getPrice() {
         return price;
+    }
+
+    public int getRent() {
+        return (int) Math.ceil((double)price * 0.3);
     }
 }
