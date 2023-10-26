@@ -1,6 +1,6 @@
 package me.tue.monopolytue.turn;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -12,6 +12,7 @@ public class NextTurnButton extends JButton implements MouseListener {
 
     public NextTurnButton(Diceroller diceroller) {
         super("Next Turn");
+        this.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         this.diceroller = diceroller;
         this.addMouseListener(this);
     }

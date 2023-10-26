@@ -29,11 +29,30 @@ public class Participant extends JComponent {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //if (g.getFont() == null) {
+        if (this.getFont().getSize() < 40) {
             g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-        //}
+        }
         Graphics2D graphics2D = (Graphics2D) g;
-        graphics2D.drawString("Player " + this.participantID + ": " + String.valueOf(balance), 0, 50);
+        Color playerColor = this.getColor();
+
+
+        graphics2D.setColor(playerColor);
+        String playerText = "Player " + this.participantID;
+
+        graphics2D.drawString(playerText, 0, 50);
+        int width = g.getFontMetrics().stringWidth(playerText);
+
+        graphics2D.setColor(new Color(0, 0, 0));
+        graphics2D.drawString(": " + balance, width, 50);
+    }
+
+
+    public Color getColor() {
+        int rgb = this.getImage().getRGB((int) (this.getImage().getWidth() / 2.0), (int) (this.getImage().getHeight() / 2.0));
+        int red = Math.abs(256 + (int) (rgb/(Math.pow(256, 2))) - 20);
+        int green = Math.abs(256 + (rgb/256) % 256 - 20);
+        int blue = Math.abs(256 + rgb%256 - 20);
+        return new Color(red, green, blue);
     }
 
     @Override
@@ -64,8 +83,8 @@ public class Participant extends JComponent {
 
         for (int i = 0; i < playerIndex; i++) {
             x += this.getImage().getWidth() + 5;
-            if (x - currentSquare.getLocation().getX() > currentSquare.getImage().getWidth()) {
-                x = (int) currentSquare.getLocation().getX() + 5;
+            if (x - currentSquare.getLocation().getX() + this.getImage().getWidth() > currentSquare.getImage().getWidth()) {
+                x = (int) currentSquare.getLocation().getX() + 15;
                 y += this.getImage().getHeight() + 5;
             }
         }
@@ -112,7 +131,7 @@ public class Participant extends JComponent {
     public void transferAmount(Participant receiver, int amount) {
         receiver.addToBalance(amount);
         this.removeToBalance(amount);
-        this.paintTransferAmount(g, amount, receiver);
+        this.paintTransferAmount(this.getGraphics(), amount, receiver);
     }
 
     public void paintTransferAmount(Graphics g, int amount, Participant receiver) {

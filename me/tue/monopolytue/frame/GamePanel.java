@@ -46,7 +46,9 @@ public class GamePanel extends JPanel {
         }
         middlePanel.add(this.board);
         rightPanel.add(this.diceroller);
+        rightPanel.add(Box.createRigidArea(new Dimension(0,40)));
         rightPanel.add(this.buyButton);
+        rightPanel.add(Box.createRigidArea(new Dimension(0,20)));
         rightPanel.add(this.nextTurnButton);
 
         this.add(leftPanel);
