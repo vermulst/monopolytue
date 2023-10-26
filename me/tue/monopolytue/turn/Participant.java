@@ -112,6 +112,14 @@ public class Participant extends JComponent {
     public void transferAmount(Participant receiver, int amount) {
         receiver.addToBalance(amount);
         this.removeToBalance(amount);
+        this.paintTransferAmount(g, amount, receiver);
+    }
+
+    public void paintTransferAmount(Graphics g, int amount, Participant receiver) {
+        super.paintComponent(g);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+        Graphics2D graphics2D = (Graphics2D) g;
+        graphics2D.drawString("Player " + this.participantID + "paid " + String.valueOf(amount) + " to player " + receiver.participantID, 0, 50);
     }
 
     public void checkBankrupt() {
