@@ -1,6 +1,6 @@
 package me.tue.monopolytue.turn;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -16,6 +16,7 @@ public class BuyButton extends JButton implements MouseListener {
 
     public BuyButton(Board board, Diceroller diceroller) {
         super("Buy Card");
+        this.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         this.diceroller = diceroller;
         this.addMouseListener(this);
         this.board = board;
@@ -31,9 +32,14 @@ public class BuyButton extends JButton implements MouseListener {
         if (participant.balance >= square.getSquareGroup().getPrice()) {
             participant.removeToBalance(square.getSquareGroup().getPrice());
             square.setOwner(participant);
+            board.repaint();
         }
     }
 
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(100, 100);
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {

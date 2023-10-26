@@ -34,7 +34,6 @@ public class Square {
         if (this.squareGroup.equals(SquareGroup.CHANCE)) {
             Chancecard chancecard = new Chancecard();
             board.add(chancecard);
-            board.repaint();
             chancecard.pullChancecard();
         }
         if (this.getOwner() != null && this.getOwner() != participant) {
@@ -49,7 +48,29 @@ public class Square {
     public void render(Graphics g, JComponent component) {
         BufferedImage image = this.getImage();
         image = this.rotateImageByDegrees(image, this.getLocation().getDegreeRotation(), component);
+        if (this.getOwner() != null) {
+            image = replaceColor(image, Color.WHITE, this.getOwner().getColor());
+        }
         g.drawImage(image, (int) this.location.getX(), (int) this.location.getY(), component);
+    }
+
+    public static BufferedImage replaceColor(BufferedImage image, Color targetColor, Color replacementColor) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        BufferedImage modifiedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Color pixelColor = new Color(image.getRGB(x, y));
+                if (pixelColor.equals(targetColor)) {
+                    modifiedImage.setRGB(x, y, replacementColor.getRGB());
+                } else {
+                    modifiedImage.setRGB(x, y, image.getRGB(x, y));
+                }
+            }
+        }
+
+        return modifiedImage;
     }
 
     public BufferedImage getImage() {

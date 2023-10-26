@@ -48,6 +48,7 @@ public class Board extends JPanel {
             if (participants[i] == null) continue;
             participants[i].renderPawn(g, this);
         }
+        g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
     }
 
     public void placeSquares() {

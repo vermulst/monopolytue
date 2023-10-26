@@ -30,7 +30,6 @@ public class Chancecard extends JComponent {
         g.fillRect(0, 0, 200, 100);
         g.setColor(new Color(255, 255, 255));
         g.drawString(pulledCard, 0, 100);
-        System.out.println("test");
     }
 
     @Override
