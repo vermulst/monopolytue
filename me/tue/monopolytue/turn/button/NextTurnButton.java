@@ -1,10 +1,15 @@
-package me.tue.monopolytue.turn;
+package me.tue.monopolytue.turn.button;
+
+import me.tue.monopolytue.turn.Diceroller;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JButton;
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 public class NextTurnButton extends JButton implements MouseListener {
     
@@ -12,7 +17,17 @@ public class NextTurnButton extends JButton implements MouseListener {
 
     public NextTurnButton(Diceroller diceroller) {
         super("Next Turn");
-        this.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+        this.setBackground(new Color(245, 231, 181));
+        this.setForeground(new Color(5, 3, 3));
+        this.setFocusPainted(false);
+        this.setFont(new Font("Tahoma", Font.PLAIN, 40));
+
+        LineBorder border1 = new LineBorder(new Color(253, 198, 86), 3, true);
+        EmptyBorder border2 = new EmptyBorder(1,120,1,120);
+        Border newBorder = BorderFactory.createCompoundBorder(border1, border2);
+
+        this.setBorder(newBorder);
+
         this.diceroller = diceroller;
         this.addMouseListener(this);
     }
@@ -22,13 +37,13 @@ public class NextTurnButton extends JButton implements MouseListener {
             this.diceroller.isRolled = false;
             this.diceroller.nextTurn();
             this.diceroller.emptyDice();
-            this.diceroller.getPriceCard().update();
+            this.diceroller.getPriceCard().updateText();
         }
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(100, 100);
+        return new Dimension(200, 150);
     }
  
     @Override

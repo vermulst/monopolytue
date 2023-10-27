@@ -1,13 +1,14 @@
 package me.tue.monopolytue.board;
 
-import me.tue.monopolytue.turn.Participant;
+import me.tue.monopolytue.frame.GamePanel;
+import me.tue.monopolytue.turn.participant.Participant;
 import me.tue.monopolytue.utils.Location;
 import me.tue.monopolytue.utils.Vector;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 public class Board extends JPanel {
 
@@ -24,13 +25,21 @@ public class Board extends JPanel {
 
     private Participant[] participants;
 
+    private GamePanel gamePanel;
 
-    public Board(Participant[] participants) {
-        this.participants = participants;
+    public Board(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
         this.squares = new Square[(SQUARES_PER_ROW) * 4 + 4];
         this.placeSquares();
+
+        LineBorder border1 = new LineBorder(new Color(0, 0, 0), 2, true);
+        this.setBorder(border1);
+        this.setLayout(new GridBagLayout());
     }
 
+    public void setParticipants(Participant[] participants) {
+        this.participants = participants;
+    }
 
 
     public int getTotalSquareAmount() {
@@ -48,7 +57,6 @@ public class Board extends JPanel {
             if (participants[i] == null) continue;
             participants[i].renderPawn(g, this);
         }
-        g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
     }
 
     public void placeSquares() {
@@ -102,5 +110,9 @@ public class Board extends JPanel {
 
     public Participant[] getParticipants() {
         return participants;
+    }
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 }

@@ -1,4 +1,4 @@
-package me.tue.monopolytue.turn;
+package me.tue.monopolytue.turn.participant;
 
 import me.tue.monopolytue.board.Board;
 import me.tue.monopolytue.board.Square;
@@ -14,27 +14,21 @@ import java.text.NumberFormat;
 public class Participant extends JComponent {
 
     private int participantID;
-    public int balance = 1500;
+    public int balance = 750;
     private int positionOnBoard = 0;
-    private boolean bankrupt = false;
     private boolean turn = false;
+    private boolean bankrupt = false;
 
+    private static final int IMG_WIDTH = 50;
+    private static final int IMG_HEIGHT = 50;
 
-    private static final int REWARD_PASSING_START = 200;
+    private static final int REWARD_PASSING_START = 100;
+
+    private BufferedImage image;
 
     public Participant(int id) {
         this.participantID = id;
-    }
-
-    public void setTurn(boolean turn) {
-        this.turn = turn;
-        this.repaint();
-    }
-
-    private String formatted(int number) {
-        String formattedNumber = NumberFormat.getInstance().format(number);
-        formattedNumber = formattedNumber.replaceAll(",", ".");
-        return formattedNumber;
+        this.initImage();
     }
 
 
@@ -43,9 +37,16 @@ public class Participant extends JComponent {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (this.getFont().getSize() < 40) {
-            g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+            g.setFont(new Font("Tahoma", Font.PLAIN, 40));
         }
         Graphics2D graphics2D = (Graphics2D) g;
+
+        if (this.turn) {
+            graphics2D.drawRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
+            graphics2D.setColor(new Color(245, 231, 181));
+            graphics2D.fillRect(1, 1, this.getWidth() - 2, this.getHeight() - 2);
+        }
+
         Color playerColor = this.getColor();
 
 
@@ -56,26 +57,10 @@ public class Participant extends JComponent {
         int width = g.getFontMetrics().stringWidth(playerText);
 
         graphics2D.setColor(new Color(0, 0, 0));
-        graphics2D.drawString(": " + formatted(balance), 10 + width, 50);
+        graphics2D.drawString(": €" + formatted(balance), 10 + width, 50);
 
-        if (this.turn) {
-            graphics2D.drawRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
-        }
     }
 
-
-    public Color getColor() {
-        int rgb = this.getImage().getRGB((int) (this.getImage().getWidth() / 2.0), (int) (this.getImage().getHeight() / 2.0));
-        int red = Math.abs(256 + (int) (rgb/(Math.pow(256, 2))) - 20);
-        int green = Math.abs(256 + (rgb/256) % 256 - 20);
-        int blue = Math.abs(256 + rgb%256 - 20);
-        return new Color(red, green, blue);
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(300, 75);
-    }
 
     //draw the pawn onto the existing board
     public void renderPawn(Graphics g, Board board) {
@@ -99,16 +84,40 @@ public class Participant extends JComponent {
         int y = (int) currentSquare.getLocation().getY() + 25;
 
         for (int i = 0; i < playerIndex; i++) {
-            x += this.getImage().getWidth() + 5;
-            if (x - currentSquare.getLocation().getX() > currentSquare.getImage().getWidth()) {
+            x += image.getWidth() - 10;
+            if (x - currentSquare.getLocation().getX() + image.getWidth() > currentSquare.getImage().getWidth()) {
                 x = (int) currentSquare.getLocation().getX() + 15;
-                y += this.getImage().getHeight() + 5;
+                y += image.getHeight() + 5;
             }
         }
 
         g.drawImage(image, x, y, board);
     }
 
+    public void setTurn(boolean turn) {
+        this.turn = turn;
+        this.repaint();
+    }
+
+    private String formatted(int number) {
+        String formattedNumber = NumberFormat.getInstance().format(number);
+        formattedNumber = formattedNumber.replaceAll(",", ".");
+        return formattedNumber;
+    }
+
+
+    public Color getColor() {
+        int rgb = this.getImage().getRGB((int) (this.getImage().getWidth() / 2.0), (int) (this.getImage().getHeight() / 2.0));
+        int red = Math.abs(256 + (int) (rgb/(Math.pow(256, 2))) - 20);
+        int green = Math.abs(256 + (rgb/256) % 256 - 20);
+        int blue = Math.abs(256 + rgb%256 - 20);
+        return new Color(red, green, blue);
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(300, 75);
+    }
 
 
     public Square getCurrentSquare(Board board) {
@@ -116,15 +125,27 @@ public class Participant extends JComponent {
         return square;
     }
 
-    public BufferedImage getImage() {
+    public void initImage() {
         try {
             BufferedImage image1 = ImageIO.read(new File("images/pawns/player" + this.participantID + ".png"));
-            return image1;
+
+
+            BufferedImage scaledImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D graphics2D = scaledImage.createGraphics();
+            graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            graphics2D.drawImage(image1, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
+            graphics2D.dispose();
+
+            this.image = scaledImage;
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public BufferedImage getImage() {
+        return image;
+    }
 
     public void moveSquares(Board board, int squares) {
         this.positionOnBoard += squares;
@@ -139,7 +160,7 @@ public class Participant extends JComponent {
         this.repaint();
     }
 
-    public void removeToBalance(int amount) {
+    public void removeFromBalance(int amount) {
         this.balance -= amount;
         this.checkBankrupt();
         this.repaint();
@@ -147,16 +168,9 @@ public class Participant extends JComponent {
 
     public void transferAmount(Participant receiver, int amount) {
         receiver.addToBalance(amount);
-        this.removeToBalance(amount);
-        this.paintTransferAmount(this.getGraphics(), amount, receiver);
+        this.removeFromBalance(amount);
     }
 
-    public void paintTransferAmount(Graphics g, int amount, Participant receiver) {
-        super.paintComponent(g);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-        Graphics2D graphics2D = (Graphics2D) g;
-        graphics2D.drawString("Player " + this.participantID + "paid " + String.valueOf(amount) + " to player " + receiver.participantID, 0, 50);
-    }
 
     public void checkBankrupt() {
         if (this.balance < 0) {

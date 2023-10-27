@@ -1,6 +1,7 @@
 package me.tue.monopolytue.turn;
 
 import me.tue.monopolytue.board.Board;
+import me.tue.monopolytue.turn.participant.Participant;
 import me.tue.monopolytue.utils.Position;
 
 import javax.imageio.ImageIO;
@@ -69,7 +70,7 @@ public class Diceroller extends JComponent implements MouseListener {
         this.board.repaint();
         participant.getCurrentSquare(this.board).onLand(this.board, participant);
         this.isRolled = true;
-        this.getPriceCard().update();
+        this.getPriceCard().updateText();
     }
 
     public void nextTurn() {
@@ -103,9 +104,7 @@ public class Diceroller extends JComponent implements MouseListener {
             BufferedImage image1 = ImageIO.read(new File("images/dices/Dice-" + this.getDice1() + "-b.svg.png"));
             BufferedImage image2 = ImageIO.read(new File("images/dices/Dice-" + this.getDice2() + "-b.svg.png"));
 
-            // Draw the first empty dice image
             g.drawImage(image1, 0, 0, this);
-            // Draw the second empty dice image
             g.drawImage(image2, image.getWidth(), 0, this);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -120,7 +119,6 @@ public class Diceroller extends JComponent implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {
         this.rollDice();
-        //this.nextTurn(); todo: nextturnbutton
         this.repaint();
     }
 

@@ -1,25 +1,43 @@
-package me.tue.monopolytue.turn;
+package me.tue.monopolytue.turn.button;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JButton;
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import me.tue.monopolytue.board.Board;
 import me.tue.monopolytue.board.Square;
-import me.tue.monopolytue.board.SquareGroup;
+import me.tue.monopolytue.turn.Diceroller;
+import me.tue.monopolytue.turn.participant.Participant;
 
 public class BuyButton extends JButton implements MouseListener {
-    Diceroller diceroller;
-    Board board;
+    public Diceroller diceroller;
+    public Board board;
 
     public BuyButton(Board board, Diceroller diceroller) {
-        super("Buy Card");
-        this.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+        super("Buy Square");
+
+        this.setBackground(new Color(245, 231, 181));
+        this.setForeground(new Color(5, 3, 3));
+
+
+        this.setFocusPainted(false);
+        this.setFont(new Font("Tahoma", Font.PLAIN, 40));
+
+        LineBorder border1 = new LineBorder(new Color(253, 198, 86), 3, true);
+        EmptyBorder border2 = new EmptyBorder(1,120,1,120);
+        Border newBorder = BorderFactory.createCompoundBorder(border1, border2);
+
+        this.setBorder(newBorder);
+
         this.diceroller = diceroller;
-        this.addMouseListener(this);
         this.board = board;
+        this.addMouseListener(this);
+
     }
 
     public void buyButton() {
@@ -31,7 +49,7 @@ public class BuyButton extends JButton implements MouseListener {
         }
 
         if (participant.balance >= square.getSquareGroup().getPrice()) {
-            participant.removeToBalance(square.getSquareGroup().getPrice());
+            participant.removeFromBalance(square.getSquareGroup().getPrice());
             square.setOwner(participant);
             board.repaint();
         }
@@ -39,7 +57,7 @@ public class BuyButton extends JButton implements MouseListener {
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(100, 100);
+        return new Dimension(200, 150);
     }
 
     @Override

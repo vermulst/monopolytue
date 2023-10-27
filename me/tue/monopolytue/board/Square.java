@@ -1,7 +1,7 @@
 package me.tue.monopolytue.board;
 
-import me.tue.monopolytue.Chancecard;
-import me.tue.monopolytue.turn.Participant;
+import me.tue.monopolytue.popup.Chancecard;
+import me.tue.monopolytue.turn.participant.Participant;
 import me.tue.monopolytue.utils.Location;
 
 import java.awt.*;
@@ -33,12 +33,12 @@ public class Square {
     public void onLand(Board board, Participant participant) {
         if (this.squareGroup.equals(SquareGroup.CHANCE)) {
             Chancecard chancecard = new Chancecard();
-            board.add(chancecard);
-            chancecard.pullChancecard();
+            board.getGamePanel().addPopup(chancecard);
+            chancecard.pullChancecard(participant);
         }
         if (this.getOwner() != null && this.getOwner() != participant) {
             participant.transferAmount(this.getOwner(), this.getSquareGroup().getRent());
-        } 
+        }
     }
 
 

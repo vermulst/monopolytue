@@ -1,35 +1,56 @@
 package me.tue.monopolytue.frame;
 
-import me.tue.monopolytue.turn.Participant;
-import me.tue.monopolytue.turn.Player;
+import me.tue.monopolytue.menu.MenuPanel;
+import me.tue.monopolytue.turn.participant.Participant;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
-public class Game {
+public class Game extends JFrame {
 
-    private JFrame frame;
-    private GamePanel panel;
-    private Participant[] participants;
-
-
+    private MenuPanel menuPanel;
+    private GamePanel gamePanel;
 
     public Game() {
 
-        this.participants = new Participant[]{new Player(1), new Participant(2), new Participant(3), new Participant(4)};
-        this.participants[0].setTurn(true);
+        super("Monopoly");
+        this.setSize(1920, 1080);
 
-        this.frame = new JFrame("Monopoly");
-        this.frame.setSize(1920, 1080);
-        this.panel = new GamePanel(this.frame, this.participants);
-        this.frame.add(this.panel);
-        this.frame.pack();
+
+        this.gamePanel = new GamePanel();
+        this.menuPanel = new MenuPanel(this);
+
+        this.pack();
 
     }
 
-    public void start() {
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setSize(1920, 1080);
-        this.frame.setVisible(true);
+
+    public void open() {
+        this.add(menuPanel);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(1920, 1080);
+        this.setVisible(true);
     }
-    
+
+    public void start(Participant[] participants) {
+        this.remove(menuPanel);
+        this.add(this.gamePanel);
+        this.repaint();
+        System.out.println("test");
+        this.gamePanel.start(participants);
+    }
+
+    public void stop() {
+        this.add(menuPanel);
+        this.remove(this.gamePanel);
+        this.repaint();
+    }
+
+
+    public MenuPanel getMenuPanel() {
+        return menuPanel;
+    }
+
+    public GamePanel getGamePanel() {
+        return gamePanel;
+    }
 }
