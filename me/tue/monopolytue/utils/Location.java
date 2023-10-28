@@ -2,6 +2,11 @@ package me.tue.monopolytue.utils;
 
 import java.util.Objects;
 
+/**
+ * class location, to know the prices of cards
+ * and where the pawns are located.
+ */
+
 public class Location extends Position{
 
 
@@ -14,6 +19,10 @@ public class Location extends Position{
     public void setDegreeRotation(int degreeRotation) {
         this.degreeRotation = degreeRotation;
     }
+
+    /**
+     * Clone the location and return the location.
+     */
 
     public Location clone() {
         Location location = new Location(this.getX(), this.getY());

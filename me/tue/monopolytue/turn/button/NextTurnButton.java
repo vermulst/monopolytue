@@ -11,9 +11,20 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+/**
+ * Conducts the approriate operations when the next turn button is pressed.
+ * 
+ * 
+ */
+
 public class NextTurnButton extends JButton implements MouseListener {
     
     public Diceroller diceroller;
+    
+    /**
+     * Renders the next turn button on the right side of the panel.
+     * @param diceroller
+     */
 
     public NextTurnButton(Diceroller diceroller) {
         super("Next Turn");
@@ -31,6 +42,11 @@ public class NextTurnButton extends JButton implements MouseListener {
         this.diceroller = diceroller;
         this.addMouseListener(this);
     }
+
+    /**
+     * The onClick method calls the methods which are neccesary,
+     * such as checking if there is already rolled the dices.
+     */
 
     public void onClick() {
         if (diceroller.isRolled) {

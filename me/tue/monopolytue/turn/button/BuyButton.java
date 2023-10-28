@@ -14,9 +14,21 @@ import me.tue.monopolytue.board.Square;
 import me.tue.monopolytue.turn.Diceroller;
 import me.tue.monopolytue.turn.participant.Participant;
 
+/**
+ * This class conducts operations when the Buybutton is pressed by user.
+ */
+
 public class BuyButton extends JButton implements MouseListener {
     public Diceroller diceroller;
     public Board board;
+
+    /**
+     * The constructor of the BuyButton class.
+     * Renders the buybutton class on the right side of the panel.
+     * 
+     * @param board
+     * @param diceroller
+     */
 
     public BuyButton(Board board, Diceroller diceroller) {
         super("Buy Square");
@@ -39,6 +51,11 @@ public class BuyButton extends JButton implements MouseListener {
         this.addMouseListener(this);
 
     }
+
+    /**
+     * Conducts approriate operations when player wants to buy a non occupied card,
+     * such as removing balance of the corresponding player and setting the owner.
+     */
 
     public void buyButton() {
         if (!this.diceroller.isRolled) return;

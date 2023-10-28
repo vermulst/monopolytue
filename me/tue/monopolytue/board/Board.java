@@ -27,6 +27,12 @@ public class Board extends JPanel {
 
     private GamePanel gamePanel;
 
+    /**
+     * Rendering the gaming board.
+     * 
+     * @param gamePanel 
+     */
+
     public Board(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         this.squares = new Square[(SQUARES_PER_ROW) * 4 + 4];
@@ -58,6 +64,10 @@ public class Board extends JPanel {
             participants[i].renderPawn(g, this);
         }
     }
+
+    /**
+     * Placing the squares on the board.
+     */
 
     public void placeSquares() {
         Vector vector = new Vector(-IMG_WIDTH, 0);

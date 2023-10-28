@@ -9,12 +9,21 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+/**
+ * Class for the menupanel at the start of the game.
+ */
+
 public class MenuPanel extends JPanel {
 
 
     private int selectedPlayerAmount;
     private StartButton startButton;
     private JPanel selectingPlayerPanel;
+
+    /**
+     * Render the menu panel with the selected number of players.
+     * @param game
+     */
 
     public MenuPanel(Game game) {
 
@@ -33,6 +42,10 @@ public class MenuPanel extends JPanel {
         this.add(Box.createRigidArea(new Dimension(0,40)));
         this.initPlayerAmountSelect();
     }
+
+    /**
+     * initialize the selected number of players.
+     */
 
     public void initPlayerAmountSelect() {
         this.selectingPlayerPanel = new JPanel();

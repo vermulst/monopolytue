@@ -3,10 +3,20 @@ package me.tue.monopolytue.utils;
 import java.awt.*;
 import java.util.Objects;
 
+/**
+ * Position class
+ */
+
 public class Position {
 
     private double x;
     private double y;
+
+    /**
+     * Sets the position of the pawn to the player.
+     * @param x
+     * @param y
+     */
 
     public Position(double x, double y) {
         this.x = x;
@@ -17,21 +27,43 @@ public class Position {
         return new Position(this.x, this.y);
     }
 
+    /**
+     * Multiplies x and y by the int multiplier
+     * @param multiplier
+     */
+
 
     public void multiply(int multiplier) {
         this.x *= multiplier;
         this.y *= multiplier;
     }
 
+    /**
+     * Add number to the current position when the pawn is moved.
+     * @param position
+     */
+
     public void add(Position position) {
         this.x += position.getX();
         this.y += position.getY();
     }
 
+    /**
+     * Adds double x and double y to the current position
+     * @param x
+     * @param y
+     */
+
     public void add(double x, double y) {
         this.x += x;
         this.y += y;
     }
+
+    /**
+     * Return the the distance between x and y.
+     * @param location
+     * @return
+     */
 
     public double getDistance(Location location) {
         double y = Math.abs(location.getY() - this.getY());

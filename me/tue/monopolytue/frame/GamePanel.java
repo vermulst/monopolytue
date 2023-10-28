@@ -12,6 +12,10 @@ import java.awt.*;
 
 import javax.swing.*;
 
+/**
+ * The class game panel 
+ */
+
 public class GamePanel extends JLayeredPane {
     
     private Board board;
@@ -25,6 +29,10 @@ public class GamePanel extends JLayeredPane {
 
     private Boolean paused = false;
 
+    /**
+     * Renering the gaming panel
+     */
+
     public GamePanel() {
         this.setSize(1920, 1080);
 
@@ -36,6 +44,10 @@ public class GamePanel extends JLayeredPane {
         this.nextTurnButton = new NextTurnButton(this.diceroller);
     }
 
+    /**
+     * Render the start panel, to set the game settings. 
+     * @param participants
+     */
 
     public void start(Participant[] participants) {
         this.board.setParticipants(participants);
@@ -50,6 +62,10 @@ public class GamePanel extends JLayeredPane {
         this.add(this.popupPanel, JLayeredPane.PALETTE_LAYER);
     }
 
+    /**
+     * Initializing the organized panel.
+     */
+
     public void initOrganizedPanel() {
         JPanel organizedPanel = new JPanel();
         FlowLayout flowLayout = new FlowLayout();
@@ -61,6 +77,10 @@ public class GamePanel extends JLayeredPane {
         this.organizedPanel = organizedPanel;
     }
 
+    /**
+     * Initializing pop-up panel
+     */
+
     public void initPopupPanel() {
         JPanel popupPanel = new JPanel();
         popupPanel.setOpaque(false);
@@ -69,11 +89,21 @@ public class GamePanel extends JLayeredPane {
         this.popupPanel = popupPanel;
     }
 
+    /**
+     * Adds the the pop-up button.
+     * @param button
+     */
+
     public void addPopup(JButton button) {
         this.popupPanel.add(button);
         this.paused = true;
         button.addActionListener(new PopupActionListener(button, this));
     }
+
+    /**
+     * Initialize left panel on the gamepanel
+     * @param participants
+     */
 
 
     public void initLeftPanel(Participant[] participants) {
@@ -85,11 +115,19 @@ public class GamePanel extends JLayeredPane {
         this.organizedPanel.add(leftPanel);
     }
 
+    /**
+     * Initialize middle panel on to the gaming board.
+     */
+
     public void initMiddlePanel() {
         JPanel middlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         middlePanel.add(this.board);
         this.organizedPanel.add(middlePanel);
     }
+
+    /**
+     * Initialize right panel on to the gaming board
+     */
 
     public void initRightPanel() {
         JPanel rightPanel = new JPanel();

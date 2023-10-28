@@ -9,6 +9,11 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Chancecard class renders the chancecard when a player drops on a chancecard.
+ * Adjusts the balance of the participant accordingly.
+ */
+
 public class Chancecard extends JButton {
 
     String[] stringCards = new String[5];
@@ -16,7 +21,9 @@ public class Chancecard extends JButton {
     String pulledCard;
     int[] balanceChange = {-100, -50, 50, 100, 150};
 
-
+    /**
+     * Renders the Chancecard into the foreground.
+     */
     public Chancecard() {
         super("");
 
@@ -39,15 +46,21 @@ public class Chancecard extends JButton {
         Border newBorder = BorderFactory.createCompoundBorder(border1, border2);
 
         this.setBorder(newBorder);
-
-
     }
+
+    /**
+     * Updates the tect of the chancecard.
+     */
 
     public void updateText() {
         String chanceCard = "Chancecard!\n\n";
         String text = chanceCard + pulledCard;
         this.setText("<html>"  + text.replaceAll("\\n", "<br>") + "</html>");
     }
+
+    /**
+     * Renders the chance card.
+     */
 
     @Override
     public void paintComponent(Graphics g) {
@@ -59,6 +72,11 @@ public class Chancecard extends JButton {
         return new Dimension(1400, 883);
     }
 
+    /**
+     * pulls a chancecard when the player drops on a chance card.
+     * @param participant
+     */
+
     public void pullChancecard(Participant participant) {
         int number = ThreadLocalRandom.current().nextInt(5);
         this.event(participant, number);
@@ -66,6 +84,12 @@ public class Chancecard extends JButton {
         this.updateText();
         this.update(getGraphics());
     }
+
+    /**
+     * Adjusts the balance of the player accoring to the chancecard.
+     * @param participant
+     * @param number
+     */
 
     public void event(Participant participant, int number) {
         switch (number) {

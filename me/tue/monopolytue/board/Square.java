@@ -13,6 +13,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+/**
+ * This sqaure class monitors the owner of a specific square and repaints the color 
+ * of the square to the corresonding player.
+ * Moreover it renders the squares on the board at the beginning of the game.
+ * When a player moves to a chancecard square the program executes the appriate measures.
+ */
+
 public class Square {
 
 
@@ -29,6 +36,13 @@ public class Square {
         this.owner = owner;
     }
 
+    /**
+     * Function to pull a chancecard when participant lands on a chancecard.
+     * Transfer rent from participant to owner when an card is already owned.
+     * 
+     * @param board
+     * @param participant
+     */
 
     public void onLand(Board board, Participant participant) {
         if (this.squareGroup.equals(SquareGroup.CHANCE)) {
@@ -54,6 +68,15 @@ public class Square {
         g.drawImage(image, (int) this.location.getX(), (int) this.location.getY(), component);
     }
 
+/**
+ * Returns a modified iage where the color of the square is altered to the corresponding owner. 
+ * 
+ * @param image
+ * @param targetColor
+ * @param replacementColor
+ * @return modifiedImage
+ */
+
     public static BufferedImage replaceColor(BufferedImage image, Color targetColor, Color replacementColor) {
         int width = image.getWidth();
         int height = image.getHeight();
@@ -73,6 +96,13 @@ public class Square {
         return modifiedImage;
     }
 
+    /**
+     * Returns the appriate image for the board.
+     * Either emptysquare, emptycorner or chancecard/
+     * 
+     * @return image
+     */
+
     public BufferedImage getImage() {
         File file = new File("images/emptysquare.png");
         if (SquareGroup.CORNER.equals(this.getSquareGroup())) {
@@ -91,6 +121,12 @@ public class Square {
     public Location getLocation() {
         return location;
     }
+
+    /**
+     * Return the rotated image depend upon which side the image needs to be placed.
+     * 
+     * @return rotated
+     */
 
 
     public BufferedImage rotateImageByDegrees(BufferedImage img, double angle, JComponent component) {

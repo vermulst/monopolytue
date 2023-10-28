@@ -1,8 +1,11 @@
 package me.tue.monopolytue;
 
 import me.tue.monopolytue.frame.Game;
-
 import java.awt.*;
+
+/**
+ * The class which runs the game.
+ */
 
 public class Main {
 

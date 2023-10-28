@@ -2,6 +2,12 @@ package me.tue.monopolytue.board;
 
 import java.util.concurrent.SynchronousQueue;
 
+/**
+ * The class square group which determines the price of the card,
+ * depending upon the side of the card.
+ * Moreover also the rent is determined
+ */
+
 public enum SquareGroup {
     RED(150),
     YELLOW(225),
@@ -12,6 +18,7 @@ public enum SquareGroup {
 
 
     private int price;
+
     SquareGroup(int price) {
         this.price = price;
     }
@@ -21,6 +28,6 @@ public enum SquareGroup {
     }
 
     public int getRent() {
-        return (int) Math.ceil((double)price * 0.3);
+        return (int) Math.ceil((double) price * 0.3);
     }
 }

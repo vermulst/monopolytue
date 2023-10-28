@@ -17,6 +17,12 @@ public class StartButton extends JButton implements MouseListener {
     private Game game;
     private MenuPanel menuPanel;
 
+    /**
+     * The start button to start the game after the number of players are selected.
+     * @param game
+     * @param menuPanel
+     */
+
     public StartButton(Game game, MenuPanel menuPanel) {
         super("Start Game");
 
