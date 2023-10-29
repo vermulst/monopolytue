@@ -1,9 +1,5 @@
 package me.tue.monopolytue.utils;
 
-
-public class Location extends Position {
-
-}
 /**
  * class location, used to simplify x, y and rotation
  */

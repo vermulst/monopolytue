@@ -87,22 +87,19 @@ public class Chancecard extends PopupButton {
     public void event(Participant participant, int number) {
         switch (number) {
             case 0 -> {
-                participant.removeFromBalance(200);
+                participant.removeFromBalance(150);
             }
             case 1 -> {
                 participant.removeFromBalance(100);
             }
-            case 1 -> {
-                participant.removeFromBalance(50);
-            }
             case 2 -> {
-                participant.addToBalance(50);
+                participant.addToBalance(25);
             }
             case 3 -> {
-                participant.addToBalance(100);
+                participant.addToBalance(50);
             }
             case 4 -> {
-                participant.addToBalance(150);
+                participant.addToBalance(75);
             }
         }
     }

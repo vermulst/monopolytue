@@ -20,7 +20,6 @@ import javax.swing.border.LineBorder;
 public class NextTurnButton extends JButton implements MouseListener {
     
     private final Diceroller diceroller;
-    public Diceroller diceroller;
 
     /**
      * Constructs the next turn button.
