@@ -35,53 +35,13 @@ public class Participant extends JComponent {
 
     /**
      * The constructor of the Participant class.
-     * @param id
+     * @param id - the id of the participant
      */
     public Participant(int id) {
         this.participantID = id;
         this.initImage();
     }
 
-
-    // draw the balance counter
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (this.getFont().getSize() < 40) {
-            g.setFont(new Font("Tahoma", Font.PLAIN, 40));
-        }
-        Graphics2D graphics2D = (Graphics2D) g;
-
-        if (this.isTurn()) {
-            graphics2D.drawRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
-            graphics2D.setColor(new Color(245, 231, 181));
-            graphics2D.fillRect(1, 1, this.getWidth() - 2, this.getHeight() - 2);
-        }
-
-        Color playerColor = this.getColor();
-
-
-        graphics2D.setColor(playerColor);
-        String playerText = "Player " + this.participantID;
-
-        if (this.isBankrupt()) {
-            AttributedString as = new AttributedString(playerText);
-            as.addAttribute(TextAttribute.FONT, g.getFont());
-            as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON, 1,
-                    playerText.length());
-            as.addAttribute(TextAttribute.STRIKETHROUGH,
-                    TextAttribute.STRIKETHROUGH_ON, 0, playerText.length());
-
-            graphics2D.drawString(as.getIterator(), 10, 50);
-        } else {
-            graphics2D.drawString(playerText, 10, 50);
-        }
-        int width = g.getFontMetrics().stringWidth(playerText);
-
-        graphics2D.setColor(new Color(0, 0, 0));
-        graphics2D.drawString(": €" + formatted(balance), 10 + width, 50);
-
-    }
 
     /**
      * Render the pawn of the participant to the square it's currently standing on.
@@ -125,13 +85,18 @@ public class Participant extends JComponent {
 
     /**
      * Boolean whether a participant has the turn.
-     * @param turn
+     * @param turn - whether it's the participant's turn.
      */
     public void setTurn(boolean turn) {
         this.turn = turn;
         this.repaint();
     }
 
+    /**
+     * Formats a number with dots every 3 numbers starting from the end.
+     * @param number - number to format.
+     * @return A formatted String
+     */
     private String formatted(int number) {
         String formattedNumber = NumberFormat.getInstance().format(number);
         formattedNumber = formattedNumber.replaceAll(",", ".");
@@ -150,15 +115,6 @@ public class Participant extends JComponent {
         return new Color(red, green, blue);
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(300, 75);
-    }
-
-
-    public Square getCurrentSquare(Board board) {
-        return board.getSquares()[this.positionOnBoard];
-    }
 
     /**
      * Create the image for the participant
@@ -181,6 +137,11 @@ public class Participant extends JComponent {
     }
 
 
+    /**
+     * Attempt to let the participant buy the square
+     * @param square - square to buy
+     * @param board - board where the square is located on
+     */
     public void buySquare(Square square, Board board) {
         if (square.getSquareGroup().getPrice() <= 0) {
             return;
@@ -194,8 +155,8 @@ public class Participant extends JComponent {
 
     /**
      * Moves the participant the correct number of squares.
-     * @param board
-     * @param squares
+     * @param board - the board to move squares on.
+     * @param squares - the amount of squares.
      */
     public void moveSquares(Board board, int squares) {
         this.positionOnBoard += squares;
@@ -207,7 +168,7 @@ public class Participant extends JComponent {
 
     /**
      * Adds amount to balance of the participant.
-     * @param amount
+     * @param amount - the added amount.
      */
     public void addToBalance(int amount) {
         this.balance += amount;
@@ -216,7 +177,7 @@ public class Participant extends JComponent {
     
     /**
      * Removes amount from balance of the particpant.
-     * @param amount
+     * @param amount - the removed amount.
      */
     public void removeFromBalance(int amount) {
         this.balance -= amount;
@@ -225,9 +186,9 @@ public class Participant extends JComponent {
     }
 
     /**
-     * Transfers amount from particpant to receiver.
-     * @param receiver
-     * @param amount
+     * Transfers amount from participant to receiver.
+     * @param receiver - the receiver.
+     * @param amount - the paid amount.
      */
     public void transferAmount(Participant receiver, int amount) {
         receiver.addToBalance(amount);
@@ -243,7 +204,11 @@ public class Participant extends JComponent {
         }
     }
 
-
+    /**
+     * Check the value of all the participant's squares combined
+     * @param board - board to check worth
+     * @return int value
+     */
     public int getTotalWorth(Board board) {
         int value = 0;
         for (Square square : board.getSquares()) {
@@ -252,6 +217,53 @@ public class Participant extends JComponent {
             }
         }
         return value;
+    }
+
+    // draw the balance counter
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (this.getFont().getSize() < 40) {
+            g.setFont(new Font("Tahoma", Font.PLAIN, 40));
+        }
+        Graphics2D graphics2D = (Graphics2D) g;
+
+        if (this.isTurn()) {
+            graphics2D.drawRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
+            graphics2D.setColor(new Color(245, 231, 181));
+            graphics2D.fillRect(1, 1, this.getWidth() - 2, this.getHeight() - 2);
+        }
+
+        Color playerColor = this.getColor();
+
+        graphics2D.setColor(playerColor);
+        String playerText = "Player " + this.participantID;
+
+        if (this.isBankrupt()) {
+            AttributedString as = new AttributedString(playerText);
+            as.addAttribute(TextAttribute.FONT, g.getFont());
+            as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON, 1,
+                    playerText.length());
+            as.addAttribute(TextAttribute.STRIKETHROUGH,
+                    TextAttribute.STRIKETHROUGH_ON, 0, playerText.length());
+
+            graphics2D.drawString(as.getIterator(), 10, 50);
+        } else {
+            graphics2D.drawString(playerText, 10, 50);
+        }
+        int width = g.getFontMetrics().stringWidth(playerText);
+
+        graphics2D.setColor(new Color(0, 0, 0));
+        graphics2D.drawString(": €" + formatted(balance), 10 + width, 50);
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(300, 75);
+    }
+
+    public Square getCurrentSquare(Board board) {
+        return board.getSquares()[this.positionOnBoard];
     }
 
     public int getParticipantID() {

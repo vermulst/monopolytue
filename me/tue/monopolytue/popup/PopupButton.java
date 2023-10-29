@@ -10,9 +10,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Abstract Popup button class
+ * Used to display a popup which can be closed by clicking on it
+ * Follows the same format for ChanceCard and GameOverButton
+ * Abstract methods must be implemented by subclasses to define certain elements
+ */
 public abstract class PopupButton extends JButton implements ActionListener {
 
-    private GamePanel gamePanel;
+    private final GamePanel gamePanel;
 
     public PopupButton(GamePanel gamePanel) {
         super("");
@@ -32,7 +38,6 @@ public abstract class PopupButton extends JButton implements ActionListener {
 
         this.setBorder(newBorder);
 
-        gamePanel.setPaused(true);
         this.gamePanel = gamePanel;
 
         this.addActionListener(this);
@@ -49,9 +54,10 @@ public abstract class PopupButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        gamePanel.setPaused(false);
+        //removes the popup after being clicked
         gamePanel.getPopupPanel().remove(this);
         gamePanel.getPopupPanel().repaint();
+        //extra events if subclasses want to add extra elements
         this.getExtraButtonEvents();
     }
 }

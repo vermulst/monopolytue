@@ -1,7 +1,6 @@
 package me.tue.monopolytue.menu;
 
 import me.tue.monopolytue.frame.Game;
-import me.tue.monopolytue.frame.GamePanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -10,7 +9,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 /**
- * Class for the menupanel at the start of the game.
+ * Class for the menu panel displayed before the start of the game.
  */
 
 public class MenuPanel extends JPanel {
@@ -21,9 +20,8 @@ public class MenuPanel extends JPanel {
 
     /**
      * Render the menu panel with the selected number of players.
-     * @param game
+     * @param game - the game object to start the game after the start button is pressed
      */
-
     public MenuPanel(Game game) {
 
         this.selectedPlayerAmount = 4;
@@ -42,15 +40,14 @@ public class MenuPanel extends JPanel {
         this.add(emptyComponent);
         this.add(startButton);
         this.add(emptyComponent1);
-        this.initPlayerAmountSelect();
+        this.initPlayerAmountSelectPanel();
 
     }
 
     /**
-     * initialize the selected number of players.
+     * Initialize the panel to select the amount of players
      */
-
-    public void initPlayerAmountSelect() {
+    public void initPlayerAmountSelectPanel() {
         this.selectingPlayerPanel = new JPanel();
 
         this.selectingPlayerPanel.add(this.getPlayerSelectTextLabel());

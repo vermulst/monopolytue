@@ -7,19 +7,15 @@ import javax.swing.*;
 
 /**
  * The class game is the frame where the game is played upon.
- *
- * 
  */
-
 public class Game extends JFrame {
 
     private final MenuPanel menuPanel;
     private final GamePanel gamePanel;
 
     /**
-     * The game is played upon a panel. 
+     * Constructor to create a game instance.
      */
-
     public Game() {
 
         super("Monopoly");
@@ -33,9 +29,9 @@ public class Game extends JFrame {
     }
 
     /**
-     * The metod open renders the starting screen the game settings can be configured.
+     * Open the game
+     * Renders the starting screen the game settings can be configured.
      */
-
     public void open() {
         this.add(menuPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,9 +40,9 @@ public class Game extends JFrame {
     }
 
     /**
-     * The metod start starts the actual game board, with the cofigured number of participants.
-     * 
-     * @param participants
+     * Starts the game
+     *
+     * @param participants - the participants that participate in the game
      */
 
     public void start(Participant[] participants) {
@@ -57,8 +53,8 @@ public class Game extends JFrame {
     }
 
     /**
-     * The method stop stops the current game and calls the open method
-     * to alter the gamesetting and starting playing a new game.
+     * Ends the current game and calls the open method.
+     * The user can then choose to start a new game with new settings.
      */
 
     public void stop() {

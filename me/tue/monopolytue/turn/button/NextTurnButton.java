@@ -1,6 +1,6 @@
 package me.tue.monopolytue.turn.button;
 
-import me.tue.monopolytue.turn.Diceroller;
+import me.tue.monopolytue.turn.DiceRoller;
 import me.tue.monopolytue.turn.participant.Participant;
 import me.tue.monopolytue.turn.participant.Player;
 
@@ -16,16 +16,15 @@ import javax.swing.border.LineBorder;
 /**
  * Button which is used to pass on the turn when clicked.
  */
-
 public class NextTurnButton extends JButton implements MouseListener {
     
-    private final Diceroller diceroller;
+    private final DiceRoller diceroller;
 
     /**
      * Constructs the next turn button.
-     * @param diceroller
+     * @param diceroller - dice roller object.
      */
-    public NextTurnButton(Diceroller diceroller) {
+    public NextTurnButton(DiceRoller diceroller) {
         super("Next Turn");
         this.setBackground(new Color(245, 231, 181));
         this.setForeground(new Color(5, 3, 3));
@@ -48,6 +47,7 @@ public class NextTurnButton extends JButton implements MouseListener {
      */
     public void onClick() {
         if (diceroller.isRolled()) {
+            //resets the dice for the next participant
             diceroller.setRolled(false);
             int indexNew = this.diceroller.getParticipantIndex() + 1;
             if (indexNew == diceroller.getBoard().getParticipants().length) {
@@ -91,7 +91,7 @@ public class NextTurnButton extends JButton implements MouseListener {
 
     }
 
-    public Diceroller getDiceroller() {
+    public DiceRoller getDiceroller() {
         return diceroller;
     }
 }

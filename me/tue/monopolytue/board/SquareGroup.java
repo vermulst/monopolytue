@@ -1,9 +1,8 @@
 package me.tue.monopolytue.board;
 
-import java.util.concurrent.SynchronousQueue;
 
 /**
- * The class square group which determines the price of the card
+ * The enum to represent square group which determines the price of the card.
  * Moreover the rent can be calculated.
  */
 

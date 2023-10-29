@@ -4,7 +4,7 @@ import me.tue.monopolytue.board.Board;
 import me.tue.monopolytue.popup.GameOverButton;
 import me.tue.monopolytue.popup.PopupButton;
 import me.tue.monopolytue.turn.button.BuyButton;
-import me.tue.monopolytue.turn.Diceroller;
+import me.tue.monopolytue.turn.DiceRoller;
 import me.tue.monopolytue.turn.button.NextTurnButton;
 import me.tue.monopolytue.turn.participant.Participant;
 import me.tue.monopolytue.turn.PriceCard;
@@ -15,12 +15,12 @@ import java.util.function.Consumer;
 import javax.swing.*;
 
 /**
- * Class for displaying the ongoing game
+ * Class for displaying the ongoing game.
  */
 public class GamePanel extends JLayeredPane {
     
     private final Board board;
-    private final Diceroller diceroller;
+    private final DiceRoller diceroller;
     private final BuyButton buyButton;
     private final NextTurnButton nextTurnButton;
     private final PriceCard priceCard;
@@ -28,16 +28,14 @@ public class GamePanel extends JLayeredPane {
     private JPanel organizedPanel;
     private JPanel popupPanel;
 
-    private Boolean paused = false;
-
     /**
-     * Constructor to setup the game panel
+     * Constructor to create the game panel.
      */
     public GamePanel() {
         this.setSize(1920, 1080);
 
         this.board = new Board(this);
-        this.diceroller = new Diceroller(this.board);
+        this.diceroller = new DiceRoller(this.board);
         this.buyButton = new BuyButton(board, diceroller);
         this.priceCard = new PriceCard(this.diceroller, this.board);
         this.diceroller.setPriceCard(this.priceCard);
@@ -45,7 +43,8 @@ public class GamePanel extends JLayeredPane {
     }
 
     /**
-     * Adds all of the components to start the game
+     * Adds all the panels to start the game.
+     *
      * @param participants - players of the game
      */
     public void start(Participant[] participants) {
@@ -62,8 +61,16 @@ public class GamePanel extends JLayeredPane {
     }
 
 
+    /**
+     * Attempts to end the game with a game over popup.
+     *
+     * @param winner - the winner of the game
+     */
     public void stop(Participant winner) {
         GamePanel gamePanel = this;
+
+        /* The content inside the Consumer will get passed into the button
+            which then gets accepted when the button is pressed */
         Consumer<Boolean> endGameEvent = new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) {
@@ -105,16 +112,16 @@ public class GamePanel extends JLayeredPane {
 
     /**
      * Adds a popup to the overlay panel.
-     * @param PopupButton
+     * @param button - the popup button to be added
      */
     public void addPopup(PopupButton button) {
         this.getPopupPanel().add(button);
     }
 
     /**
-     * Initialize left panel onto the gamepanel
-     * Panel to display player balances
-     * @param participants
+     * Initialize left panel onto the game panel.
+     * Panel to display player balances.
+     * @param participants - the participants that participate in the game
      */
     public void initLeftPanel(Participant[] participants) {
         JPanel leftPanel = new JPanel();
@@ -126,7 +133,7 @@ public class GamePanel extends JLayeredPane {
     }
 
     /**
-     * Initialize middle panel onto the gamepanel.
+     * Initialize middle panel onto the game panel.
      * Panel to display the game board
      */
     public void initMiddlePanel() {
@@ -161,14 +168,6 @@ public class GamePanel extends JLayeredPane {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-    }
-
-    public void setPaused(boolean paused) {
-        this.paused = paused;
-    }
-
-    public Boolean getPaused() {
-        return paused;
     }
 
     public JPanel getPopupPanel() {

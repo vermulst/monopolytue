@@ -11,23 +11,21 @@ import me.tue.monopolytue.board.Square;
 import me.tue.monopolytue.turn.participant.Participant;
 
 /**
- * Renders the price of the card where player is located.
- * 
+ * Renders the price of the card where the player is located.
+ * Also displays other information when appropriate.
  */
-
 public class PriceCard extends JLabel {
 
 
-    public Diceroller diceroller;
+    public DiceRoller diceroller;
     public Board board;
 
     /**
-     * Renders the price of the card where player is located when neccesarry. 
-     * @param diceroller
-     * @param board
+     * Creates a PriceCard label.
+     * @param diceroller - A DiceRoller object
+     * @param board - A board object
      */
-
-    public PriceCard(Diceroller diceroller, Board board) {
+    public PriceCard(DiceRoller diceroller, Board board) {
         super("");
         this.setMinimumSize(this.getPreferredSize());
         this.setHorizontalAlignment(SwingConstants.CENTER);
@@ -50,9 +48,8 @@ public class PriceCard extends JLabel {
     }
 
     /**
-     * Updates the price of the card accordingly.
+     * Updates the text of the label when called.
      */
-
     public void updateText() {
         int price = this.getPrice();
         if (price == 0) {
@@ -82,10 +79,9 @@ public class PriceCard extends JLabel {
     }
 
     /**
-     * Gets the price of the current square
-     * @return
+     * Gets the price of the current square.
+     * @return int price.
      */
-
     public int getPrice() {
         if (!this.diceroller.isRolled()) {
             return 0;
@@ -95,10 +91,9 @@ public class PriceCard extends JLabel {
     }
 
     /**
-     * Returns the current square where pawn is located.
-     * @return
+     * Returns the current square where the current participant is located.
+     * @return square.
      */
-
     public Square getCurrentSquare() {
         Participant participant = this.getCurrentParticipant();
         return participant.getCurrentSquare(this.board);

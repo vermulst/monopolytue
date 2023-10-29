@@ -11,9 +11,9 @@ public class Position {
     private double y;
 
     /**
-     * Constructor to create a position with coordinates
-     * @param x
-     * @param y
+     * Constructor to create a position with coordinates.
+     * @param x - x coordinate.
+     * @param y - y coordinate.
      */
     public Position(double x, double y) {
         this.x = x;
@@ -25,8 +25,8 @@ public class Position {
     }
 
     /**
-     * Multiplies x and y by the a multiplier
-     * @param multiplier
+     * Multiplies x and y by a multiplier.
+     * @param multiplier - the multiplier.
      */
     public void multiply(int multiplier) {
         this.x *= multiplier;
@@ -34,8 +34,8 @@ public class Position {
     }
 
     /**
-     * Add another Position to the position
-     * @param position
+     * Add another Position to the position.
+     * @param position - the position.
      */
     public void add(Position position) {
         this.x += position.getX();

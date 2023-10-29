@@ -3,24 +3,20 @@ package me.tue.monopolytue.popup;
 import me.tue.monopolytue.frame.GamePanel;
 import me.tue.monopolytue.turn.participant.Participant;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Chancecard class renders the chancecard when a player drops on a chancecard.
+ * Chance card class renders the chance card when a player drops on a chance card square.
  * Adjusts the balance of the participant accordingly.
  */
-public class Chancecard extends PopupButton {
+public class ChanceCard extends PopupButton {
 
     private final String[] stringCards = new String[5];
 
     private String pulledCard;
 
-    public Chancecard(GamePanel gamePanel) {
+    public ChanceCard(GamePanel gamePanel) {
         super(gamePanel);
         stringCards[0] = "You have been convicted of money laundering.\n Pay a fine of €150.";
         stringCards[1] = "You have exceeded the speed limit.\n Pay a fine of €100.";
@@ -30,10 +26,10 @@ public class Chancecard extends PopupButton {
     }
 
     /**
-     * Updates the text of the chancecard.
+     * Updates the text of the chance card.
      */
     public void updateText() {
-        String chanceCard = "Chancecard!\n\n";
+        String chanceCard = "Chance card!\n\n";
         String text = chanceCard + this.pulledCard;
         this.setText("<html>"  + text.replaceAll("\\n", "<br>") + "</html>");
     }
@@ -68,10 +64,10 @@ public class Chancecard extends PopupButton {
     }
 
     /**
-     * pulls a chancecard when the player drops on a chance card.
-     * @param participant
+     * pulls a chance card when the player drops on a chance card.
+     * @param participant - the participant to pull the chance card
      */
-    public void pullChancecard(Participant participant) {
+    public void pullChanceCard(Participant participant) {
         int number = ThreadLocalRandom.current().nextInt(5);
         this.event(participant, number);
         this.pulledCard = this.stringCards[number];
@@ -80,9 +76,9 @@ public class Chancecard extends PopupButton {
     }
 
     /**
-     * Adjusts the balance of the player accoring to the chancecard.
-     * @param participant
-     * @param number
+     * Adjusts the balance of the player according to the chancecard.
+     * @param participant - participant to apply the event on
+     * @param number - the index of the chance card 0 - 4
      */
     public void event(Participant participant, int number) {
         switch (number) {

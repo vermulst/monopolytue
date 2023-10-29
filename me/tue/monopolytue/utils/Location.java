@@ -1,7 +1,7 @@
 package me.tue.monopolytue.utils;
 
 /**
- * class location, used to simplify x, y and rotation
+ * class location, used to simplify x, y and rotation.
  */
 public class Location extends Position{
 

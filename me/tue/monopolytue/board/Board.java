@@ -10,6 +10,10 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+/**
+ * Class used to represent a Monopoly TUE board.
+ * The board contains squares and participants which are rendered individually.
+ */
 public class Board extends JPanel {
 
     private final GamePanel gamePanel;
@@ -23,11 +27,10 @@ public class Board extends JPanel {
 
 
     /**
-     * Rendering the gaming board.
-     * 
-     * @param gamePanel 
+     * Constructor to create a monopoly board.
+     * Places squares and creates a border.
+     * @param gamePanel - Game panel to render the board onto
      */
-
     public Board(GamePanel gamePanel) {
         this.squareNames = new String[]{
                 "Vertigo", "Matrix", "Helix", "Auditorium", "Atlas", "MetaForum", "Luna", "Neuron", "Flux", "Gemini", "Fenix",
@@ -41,34 +44,9 @@ public class Board extends JPanel {
         this.setLayout(new GridBagLayout());
     }
 
-    public void setParticipants(Participant[] participants) {
-        this.participants = participants;
-    }
-
-
-    public int getTotalSquareAmount() {
-        return this.squares.length;
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        for (int i = 0; i < squares.length; i++) {
-            if (squares[i] == null) continue;
-            squares[i].render(g, this);
-        }
-        for (int i = 0; i < participants.length; i++) {
-            if (participants[i] == null || participants[i].isBankrupt()) {
-                continue;
-            }
-            participants[i].renderPawn(g, this);
-        }
-    }
-
     /**
      * Placing the squares on the board.
      */
-
     public void placeSquares() {
         Vector vector = new Vector(-IMG_WIDTH, 0);
         Vector vector1 = new Vector(-(IMG_WIDTH * 2), 0);
@@ -113,11 +91,35 @@ public class Board extends JPanel {
     }
 
     @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        for (int i = 0; i < squares.length; i++) {
+            if (squares[i] == null) continue;
+            squares[i].render(g, this);
+        }
+        for (int i = 0; i < participants.length; i++) {
+            if (participants[i] == null || participants[i].isBankrupt()) {
+                continue;
+            }
+            participants[i].renderPawn(g, this);
+        }
+    }
+
+    @Override
     public Dimension getPreferredSize() {
         int width = (SQUARES_PER_ROW) * IMG_WIDTH + 2 * (IMG_WIDTH * 2);
         return new Dimension(width, width);
     }
 
+
+    public void setParticipants(Participant[] participants) {
+        this.participants = participants;
+    }
+
+
+    public int getTotalSquareAmount() {
+        return this.squares.length;
+    }
 
     public Square[] getSquares() {
         return squares;

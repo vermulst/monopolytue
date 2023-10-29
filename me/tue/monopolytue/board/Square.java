@@ -1,6 +1,6 @@
 package me.tue.monopolytue.board;
 
-import me.tue.monopolytue.popup.Chancecard;
+import me.tue.monopolytue.popup.ChanceCard;
 import me.tue.monopolytue.turn.participant.Participant;
 import me.tue.monopolytue.turn.participant.Player;
 import me.tue.monopolytue.utils.Location;
@@ -15,9 +15,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
- * This sqaure class monitors the owner of a specific square and repaints the color
- * of the square to the corresonding participant.
- * Moreover it renders the squares on the board at the beginning of the game.
+ * Class to represent an individual square on a Monopoly board.
+ * Monitors the owner of a specific square and repaints the color.
+ * It also renders the squares on the board at the beginning of the game.
  * When a player moves to a chancecard square the program executes the appropriate measures.
  */
 
@@ -40,7 +40,7 @@ public class Square {
     }
 
     /**
-     * Function to pull a chancecard when participant lands on a chancecard.
+     * Function to pull a chance card when participant lands on a chancecard.
      * Transfer rent from participant to owner when an card is already owned.
      *
      * @param board - the board where the square is located
@@ -48,11 +48,11 @@ public class Square {
      */
     public void onLand(Board board, Participant participant) {
         if (this.squareGroup.equals(SquareGroup.CHANCE)) {
-            Chancecard chancecard = new Chancecard(board.getGamePanel());
+            ChanceCard chancecard = new ChanceCard(board.getGamePanel());
             if (participant instanceof Player) {
                 board.getGamePanel().addPopup(chancecard);
             }
-            chancecard.pullChancecard(participant);
+            chancecard.pullChanceCard(participant);
         }
         if (this.getOwner() != null && this.getOwner() != participant) {
             participant.transferAmount(this.getOwner(), this.getSquareGroup().getRent());
@@ -61,7 +61,7 @@ public class Square {
 
 
     /**
-     * Render the square onto the panel
+     * Render the square onto the panel.
      */
     public void render(Graphics g, JComponent component) {
         BufferedImage image = this.getImage();
@@ -84,9 +84,9 @@ public class Square {
     /**
     * Returns a modified image to replace a color by another one.
     *
-    * @param image
-    * @param targetColor
-    * @param replacementColor
+    * @param image - image to modify
+    * @param targetColor - color to be replaced
+    * @param replacementColor - color that replaces the targetColor
     * @return modifiedImage
     */
     public static BufferedImage replaceColor(BufferedImage image, Color targetColor, Color replacementColor) {
@@ -110,7 +110,7 @@ public class Square {
 
     /**
      * Returns the appropiate image for the board.
-     * Either emptysquare, emptycorner or chancecard/
+     * Image depends on the type of square
      *
      * @return image
      */
@@ -128,13 +128,12 @@ public class Square {
         }
     }
 
-    public Location getLocation() {
-        return location;
-    }
-
     /**
      * Return the rotated image depending on which side the image needs to be placed.
      *
+     * @param angle - the angle in degrees to rotate the image by
+     * @param component - the component where the image is on
+     * @param img - the image to be rotated
      * @return rotated
      */
     public BufferedImage rotateImageByDegrees(BufferedImage img, double angle, JComponent component) {
@@ -160,6 +159,10 @@ public class Square {
         g2d.dispose();
 
         return rotated;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
     public Participant getOwner() {

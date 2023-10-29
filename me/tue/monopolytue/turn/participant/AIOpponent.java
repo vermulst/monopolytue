@@ -2,14 +2,14 @@ package me.tue.monopolytue.turn.participant;
 
 import me.tue.monopolytue.board.Board;
 import me.tue.monopolytue.board.Square;
-import me.tue.monopolytue.turn.Diceroller;
+import me.tue.monopolytue.turn.DiceRoller;
 
 public class AIOpponent extends Participant{
     public AIOpponent(int id) {
         super(id);
     }
 
-    public void executeTurn(Diceroller diceroller) {
+    public void executeTurn(DiceRoller diceroller) {
 
         diceroller.rollDice();
         Square newSquare = this.getCurrentSquare(diceroller.getBoard());
@@ -51,6 +51,7 @@ public class AIOpponent extends Participant{
 
         return (predicate1 && predicate2 && predicate3) || predicate4;
     }
+
 
 
 }

@@ -16,8 +16,8 @@ public class PlayerAmountSelectButton extends JButton implements MouseListener {
     /**
      * Rendering the button to select the number of players.
      * 
-     * @param menuPanel
-     * @param num
+     * @param menuPanel - The menu panel where this button is located
+     * @param num - the number corresponding to the button
      */
 
     public PlayerAmountSelectButton(MenuPanel menuPanel, int num) {
@@ -53,10 +53,11 @@ public class PlayerAmountSelectButton extends JButton implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {
         this.menuPanel.setSelectedPlayerAmount(this.num);
-
         this.setBackground(new Color(187, 152, 25));
         for (Component component : this.menuPanel.getSelectingPlayerPanel().getComponents()) {
-            if (component.equals(this)) continue;
+            if (component.equals(this)) {
+                continue;
+            }
             component.setBackground(new Color(253, 198, 86));
         }
     }

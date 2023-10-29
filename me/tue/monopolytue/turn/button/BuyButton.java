@@ -11,26 +11,24 @@ import javax.swing.border.LineBorder;
 
 import me.tue.monopolytue.board.Board;
 import me.tue.monopolytue.board.Square;
-import me.tue.monopolytue.turn.Diceroller;
+import me.tue.monopolytue.turn.DiceRoller;
 import me.tue.monopolytue.turn.participant.Participant;
 
 /**
- * This class conducts operations when the Buybutton is pressed by user.
+ * This class conducts operations when the Buy button is pressed by user.
  */
-
 public class BuyButton extends JButton implements MouseListener {
-    public Diceroller diceroller;
+    public DiceRoller diceroller;
     public Board board;
 
     /**
      * The constructor of the BuyButton class.
-     * Renders the buybutton class on the right side of the panel.
+     * Creates a buy button to buy squares on the board.
      * 
-     * @param board
-     * @param diceroller
+     * @param board - the board where the buy button can buy squares from.
+     * @param diceroller - a die roller object to know which participant is buying.
      */
-
-    public BuyButton(Board board, Diceroller diceroller) {
+    public BuyButton(Board board, DiceRoller diceroller) {
         super("Buy Square");
 
         this.setBackground(new Color(245, 231, 181));
@@ -53,11 +51,9 @@ public class BuyButton extends JButton implements MouseListener {
     }
 
     /**
-     * Conducts approriate operations when player wants to buy a non occupied card,
-     * such as removing balance of the corresponding player and setting the owner.
+     * Attempts to buy square if the player rolled the dice and the square has no owner.
      */
-
-    public void buyButton() {
+    public void onClick() {
         if (!this.diceroller.isRolled()) {
             return;
         }
@@ -86,7 +82,7 @@ public class BuyButton extends JButton implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        this.buyButton();
+        this.onClick();
     }
 
 

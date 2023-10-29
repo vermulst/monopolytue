@@ -7,11 +7,13 @@ import me.tue.monopolytue.turn.participant.Player;
 import java.awt.*;
 import java.util.function.Consumer;
 
+/**
+ * Game over button that gets displayed when the game is over
+ * When clicked the user menu is opened and a new game can be started
+ */
 public class GameOverButton extends PopupButton {
 
-
     private final Consumer<Boolean> buttonEvent;
-
 
     public GameOverButton(GamePanel gamePanel, Consumer<Boolean> buttonEvent, Participant winner) {
         super(gamePanel);

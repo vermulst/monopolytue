@@ -3,7 +3,6 @@ package me.tue.monopolytue.turn;
 import me.tue.monopolytue.board.Board;
 import me.tue.monopolytue.turn.participant.AIOpponent;
 import me.tue.monopolytue.turn.participant.Participant;
-import me.tue.monopolytue.utils.Position;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,8 +16,9 @@ import java.util.Random;
 
 /**
  * Class that rolls the dices when pressed on the dices.
+ * Also keeps count of which participant's turn it is.
  */
-public class Diceroller extends JComponent implements MouseListener {
+public class DiceRoller extends JComponent implements MouseListener {
 
     private int dice1 = 0;
     private int dice2 = 0;
@@ -32,11 +32,11 @@ public class Diceroller extends JComponent implements MouseListener {
     private PriceCard priceCard;
 
     /**
-     * Create a diceroller object.
-     * Needs board to move participants when dice are rolled
-     * @param board
+     * Create a DiceRoller object.
+     * Needs board to move participants when dice are rolled.
+     * @param board - A board object
      */
-    public Diceroller(Board board) {
+    public DiceRoller(Board board) {
         this.addMouseListener(this);
         try {
             this.image = ImageIO.read(new File("images/dices/emptydice.png"));
@@ -48,7 +48,7 @@ public class Diceroller extends JComponent implements MouseListener {
 
 
     /**
-     * empties the dice
+     * empties the dice.
      */
     public void emptyDice() {
         this.dice1 = 0;
@@ -56,17 +56,10 @@ public class Diceroller extends JComponent implements MouseListener {
         this.repaint();
     }
 
-    public void setPriceCard(PriceCard priceCard) {
-        this.priceCard = priceCard;
-    }
-
-    public PriceCard getPriceCard() {
-        return priceCard;
-    }
 
     /**
-     * Rolls the dices
-     * Move participants accordingly
+     * Rolls the dices.
+     * Move participants accordingly.
      */
     public void rollDice() {
         if (this.isRolled) return;
@@ -82,8 +75,8 @@ public class Diceroller extends JComponent implements MouseListener {
     }
 
     /**
-     * Passes the turn onto the next participant
-     * Updates participant index for the next turn
+     * Passes the turn onto the next participant.
+     * Updates participant index for the next turn.
      */
     public void nextTurn() {
         if (this.checkGameOver()) {
@@ -108,6 +101,10 @@ public class Diceroller extends JComponent implements MouseListener {
         }
     }
 
+    /**
+     * Checks if the game should be ended.
+     * @return boolean
+     */
     public boolean checkGameOver() {
         int participantsLeft = 0;
         for (int i = 0; i < this.getBoard().getParticipants().length; i++) {
@@ -127,8 +124,11 @@ public class Diceroller extends JComponent implements MouseListener {
     }
 
 
-
-    int getSum() {
+    /**
+     * get the sum of both dice.
+     * @return int sum
+     */
+    public int getSum() {
         return this.dice1 + this.dice2;
     }
 
@@ -212,5 +212,17 @@ public class Diceroller extends JComponent implements MouseListener {
 
     public void setRolled(boolean rolled) {
         isRolled = rolled;
+    }
+
+    /**
+     * set the price card which the dice roller should change
+     * @param priceCard - price card object.
+     */
+    public void setPriceCard(PriceCard priceCard) {
+        this.priceCard = priceCard;
+    }
+
+    public PriceCard getPriceCard() {
+        return priceCard;
     }
 }
