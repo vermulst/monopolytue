@@ -14,6 +14,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+/**
+ * This sqaure class monitors the owner of a specific square and repaints the color
+ * of the square to the corresonding participant.
+ * Moreover it renders the squares on the board at the beginning of the game.
+ * When a player moves to a chancecard square the program executes the appropriate measures.
+ */
+
 public class Square {
 
 
@@ -32,7 +39,13 @@ public class Square {
         this.owner = owner;
     }
 
-
+    /**
+     * Function to pull a chancecard when participant lands on a chancecard.
+     * Transfer rent from participant to owner when an card is already owned.
+     *
+     * @param board - the board where the square is located
+     * @param participant - the participant landing on this square
+     */
     public void onLand(Board board, Participant participant) {
         if (this.squareGroup.equals(SquareGroup.CHANCE)) {
             Chancecard chancecard = new Chancecard(board.getGamePanel());
@@ -68,7 +81,15 @@ public class Square {
         graphics2D.dispose();
     }
 
-    public BufferedImage replaceColor(BufferedImage image, Color targetColor, Color replacementColor) {
+    /**
+    * Returns a modified image to replace a color by another one.
+    *
+    * @param image
+    * @param targetColor
+    * @param replacementColor
+    * @return modifiedImage
+    */
+    public static BufferedImage replaceColor(BufferedImage image, Color targetColor, Color replacementColor) {
         int width = image.getWidth();
         int height = image.getHeight();
         BufferedImage modifiedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -87,6 +108,12 @@ public class Square {
         return modifiedImage;
     }
 
+    /**
+     * Returns the appropiate image for the board.
+     * Either emptysquare, emptycorner or chancecard/
+     *
+     * @return image
+     */
     public BufferedImage getImage() {
         File file = new File("images/emptysquare.png");
         if (SquareGroup.CORNER.equals(this.getSquareGroup())) {
@@ -105,7 +132,11 @@ public class Square {
         return location;
     }
 
-
+    /**
+     * Return the rotated image depending on which side the image needs to be placed.
+     *
+     * @return rotated
+     */
     public BufferedImage rotateImageByDegrees(BufferedImage img, double angle, JComponent component) {
         if (angle == 0) return img;
         double rads = Math.toRadians(angle);

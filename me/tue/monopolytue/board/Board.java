@@ -22,6 +22,12 @@ public class Board extends JPanel {
     private static final int IMG_WIDTH = 75;
 
 
+    /**
+     * Rendering the gaming board.
+     * 
+     * @param gamePanel 
+     */
+
     public Board(GamePanel gamePanel) {
         this.squareNames = new String[]{
                 "Vertigo", "Matrix", "Helix", "Auditorium", "Atlas", "MetaForum", "Luna", "Neuron", "Flux", "Gemini", "Fenix",
@@ -58,6 +64,10 @@ public class Board extends JPanel {
             participants[i].renderPawn(g, this);
         }
     }
+
+    /**
+     * Placing the squares on the board.
+     */
 
     public void placeSquares() {
         Vector vector = new Vector(-IMG_WIDTH, 0);

@@ -13,6 +13,11 @@ import java.io.IOException;
 import java.text.AttributedString;
 import java.text.NumberFormat;
 
+/**
+ * The class Participant monitors the balance, position on the board, bankruptcy
+ * and if it's the participant's turn.
+ * Renders a pawn with the color depending on the ParticipantID
+ */
 public class Participant extends JComponent {
 
     private final int participantID;
@@ -28,6 +33,10 @@ public class Participant extends JComponent {
 
     private BufferedImage image;
 
+    /**
+     * The constructor of the Participant class.
+     * @param id
+     */
     public Participant(int id) {
         this.participantID = id;
         this.initImage();
@@ -74,8 +83,9 @@ public class Participant extends JComponent {
 
     }
 
-
-    //draw the pawn onto the existing board
+    /**
+     * Render the pawn of the participant to the square it's currently standing on.
+     */
     public void renderPawn(Graphics g, Board board) {
 
         BufferedImage image = this.getImage();
@@ -86,7 +96,9 @@ public class Participant extends JComponent {
 
         int playerIndex = 0;
         for (int i = 0; i < board.getParticipants().length; i++) {
-            if (!board.getParticipants()[i].getCurrentSquare(board).equals(currentSquare)) continue;
+            if (!board.getParticipants()[i].getCurrentSquare(board).equals(currentSquare)) {
+                continue;
+            }
             if (!this.equals(board.getParticipants()[i])) {
                 playerIndex++;
             }
@@ -111,6 +123,10 @@ public class Participant extends JComponent {
         g.drawImage(image, x, y, board);
     }
 
+    /**
+     * Boolean whether a participant has the turn.
+     * @param turn
+     */
     public void setTurn(boolean turn) {
         this.turn = turn;
         this.repaint();
@@ -122,7 +138,10 @@ public class Participant extends JComponent {
         return formattedNumber;
     }
 
-
+    /**
+     * Get the color of the pixel in the center of the participant's image
+     * @return Color
+     */
     public Color getColor() {
         int rgb = this.getImage().getRGB((int) (this.getImage().getWidth() / 2.0), (int) (this.getImage().getHeight() / 2.0));
         int red = Math.abs(256 + (int) (rgb/(Math.pow(256, 2))) - 20);
@@ -141,6 +160,9 @@ public class Participant extends JComponent {
         return board.getSquares()[this.positionOnBoard];
     }
 
+    /**
+     * Create the image for the participant
+     */
     public void initImage() {
         try {
             BufferedImage image1 = ImageIO.read(new File("images/pawns/player" + this.participantID + ".png"));
@@ -158,9 +180,6 @@ public class Participant extends JComponent {
         }
     }
 
-    public BufferedImage getImage() {
-        return image;
-    }
 
     public void buySquare(Square square, Board board) {
         if (square.getSquareGroup().getPrice() <= 0) {
@@ -173,6 +192,11 @@ public class Participant extends JComponent {
         }
     }
 
+    /**
+     * Moves the participant the correct number of squares.
+     * @param board
+     * @param squares
+     */
     public void moveSquares(Board board, int squares) {
         this.positionOnBoard += squares;
         if (this.positionOnBoard >= board.getTotalSquareAmount()) {
@@ -181,28 +205,44 @@ public class Participant extends JComponent {
         }
     }
 
+    /**
+     * Adds amount to balance of the participant.
+     * @param amount
+     */
     public void addToBalance(int amount) {
         this.balance += amount;
         this.repaint();
     }
-
+    
+    /**
+     * Removes amount from balance of the particpant.
+     * @param amount
+     */
     public void removeFromBalance(int amount) {
         this.balance -= amount;
         this.checkBankrupt();
         this.repaint();
     }
 
+    /**
+     * Transfers amount from particpant to receiver.
+     * @param receiver
+     * @param amount
+     */
     public void transferAmount(Participant receiver, int amount) {
         receiver.addToBalance(amount);
         this.removeFromBalance(amount);
     }
 
-
+    /**
+     * Checks whether participant is bankrupt.
+     */
     public void checkBankrupt() {
         if (this.balance < 0) {
             this.bankrupt = true;
         }
     }
+
 
     public int getTotalWorth(Board board) {
         int value = 0;
@@ -230,5 +270,8 @@ public class Participant extends JComponent {
         return turn;
     }
 
+    public BufferedImage getImage() {
+        return image;
+    }
 
 }

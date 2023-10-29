@@ -10,12 +10,15 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Chancecard class renders the chancecard when a player drops on a chancecard.
+ * Adjusts the balance of the participant accordingly.
+ */
 public class Chancecard extends PopupButton {
 
     private final String[] stringCards = new String[5];
 
     private String pulledCard;
-
 
     public Chancecard(GamePanel gamePanel) {
         super(gamePanel);
@@ -26,6 +29,9 @@ public class Chancecard extends PopupButton {
         stringCards[4] = "You won a lawsuit.\n You earn €75";
     }
 
+    /**
+     * Updates the text of the chancecard.
+     */
     public void updateText() {
         String chanceCard = "Chancecard!\n\n";
         String text = chanceCard + this.pulledCard;
@@ -61,14 +67,23 @@ public class Chancecard extends PopupButton {
         return new Dimension(1400, 883);
     }
 
-
+    /**
+     * pulls a chancecard when the player drops on a chance card.
+     * @param participant
+     */
     public void pullChancecard(Participant participant) {
         int number = ThreadLocalRandom.current().nextInt(5);
         this.event(participant, number);
         this.pulledCard = this.stringCards[number];
         this.updateText();
+        this.update(getGraphics());
     }
 
+    /**
+     * Adjusts the balance of the player accoring to the chancecard.
+     * @param participant
+     * @param number
+     */
     public void event(Participant participant, int number) {
         switch (number) {
             case 0 -> {
@@ -76,6 +91,9 @@ public class Chancecard extends PopupButton {
             }
             case 1 -> {
                 participant.removeFromBalance(100);
+            }
+            case 1 -> {
+                participant.removeFromBalance(50);
             }
             case 2 -> {
                 participant.addToBalance(50);

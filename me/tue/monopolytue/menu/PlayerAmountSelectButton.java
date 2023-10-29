@@ -13,6 +13,13 @@ public class PlayerAmountSelectButton extends JButton implements MouseListener {
     private final MenuPanel menuPanel;
     private final int num;
 
+    /**
+     * Rendering the button to select the number of players.
+     * 
+     * @param menuPanel
+     * @param num
+     */
+
     public PlayerAmountSelectButton(MenuPanel menuPanel, int num) {
         super(String.valueOf(num));
 

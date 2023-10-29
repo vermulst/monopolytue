@@ -13,10 +13,19 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+/**
+ * Button which is used to pass on the turn when clicked.
+ */
+
 public class NextTurnButton extends JButton implements MouseListener {
     
     private final Diceroller diceroller;
+    public Diceroller diceroller;
 
+    /**
+     * Constructs the next turn button.
+     * @param diceroller
+     */
     public NextTurnButton(Diceroller diceroller) {
         super("Next Turn");
         this.setBackground(new Color(245, 231, 181));
@@ -34,6 +43,10 @@ public class NextTurnButton extends JButton implements MouseListener {
         this.addMouseListener(this);
     }
 
+    /**
+     * Passes on the turn when the button is pressed
+     * Checks if the player already rolled the dice
+     */
     public void onClick() {
         if (diceroller.isRolled()) {
             diceroller.setRolled(false);
@@ -43,6 +56,7 @@ public class NextTurnButton extends JButton implements MouseListener {
             }
             Participant oldParticipant = diceroller.getBoard().getParticipants()[this.getDiceroller().getParticipantIndex()];
             Participant newParticipant = diceroller.getBoard().getParticipants()[indexNew];
+            // Must only work for the player, not AIOpponents
             if (oldParticipant instanceof Player || newParticipant instanceof Player) {
                 diceroller.nextTurn();
                 diceroller.emptyDice();
@@ -50,8 +64,6 @@ public class NextTurnButton extends JButton implements MouseListener {
             }
         }
     }
-
-
 
     @Override
     public Dimension getPreferredSize() {

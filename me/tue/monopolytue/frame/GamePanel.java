@@ -14,6 +14,9 @@ import java.util.function.Consumer;
 
 import javax.swing.*;
 
+/**
+ * Class for displaying the ongoing game
+ */
 public class GamePanel extends JLayeredPane {
     
     private final Board board;
@@ -24,8 +27,12 @@ public class GamePanel extends JLayeredPane {
 
     private JPanel organizedPanel;
     private JPanel popupPanel;
+
     private Boolean paused = false;
 
+    /**
+     * Constructor to setup the game panel
+     */
     public GamePanel() {
         this.setSize(1920, 1080);
 
@@ -37,7 +44,10 @@ public class GamePanel extends JLayeredPane {
         this.nextTurnButton = new NextTurnButton(this.diceroller);
     }
 
-
+    /**
+     * Adds all of the components to start the game
+     * @param participants - players of the game
+     */
     public void start(Participant[] participants) {
         this.board.setParticipants(participants);
         this.initOrganizedPanel();
@@ -50,6 +60,7 @@ public class GamePanel extends JLayeredPane {
         this.add(this.organizedPanel, JLayeredPane.DEFAULT_LAYER);
         this.add(this.popupPanel, JLayeredPane.PALETTE_LAYER);
     }
+
 
     public void stop(Participant winner) {
         GamePanel gamePanel = this;
@@ -64,6 +75,11 @@ public class GamePanel extends JLayeredPane {
         this.getPopupPanel().add(gameOverButton);
     }
 
+    /**
+     * Initializing the organized panel.
+     * Panel for displaying player balance, board and dice
+     * in an organized manner
+     */
     public void initOrganizedPanel() {
         JPanel organizedPanel = new JPanel();
         FlowLayout flowLayout = new FlowLayout();
@@ -75,6 +91,10 @@ public class GamePanel extends JLayeredPane {
         this.organizedPanel = organizedPanel;
     }
 
+    /**
+     * Initializing pop-up panel
+     * Overlay panel for displaying a chance card or the game over screen
+     */
     public void initPopupPanel() {
         JPanel popupPanel = new JPanel();
         popupPanel.setOpaque(false);
@@ -83,11 +103,19 @@ public class GamePanel extends JLayeredPane {
         this.popupPanel = popupPanel;
     }
 
+    /**
+     * Adds a popup to the overlay panel.
+     * @param PopupButton
+     */
     public void addPopup(PopupButton button) {
         this.getPopupPanel().add(button);
     }
 
-
+    /**
+     * Initialize left panel onto the gamepanel
+     * Panel to display player balances
+     * @param participants
+     */
     public void initLeftPanel(Participant[] participants) {
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.PAGE_AXIS));
@@ -97,12 +125,21 @@ public class GamePanel extends JLayeredPane {
         this.organizedPanel.add(leftPanel);
     }
 
+    /**
+     * Initialize middle panel onto the gamepanel.
+     * Panel to display the game board
+     */
     public void initMiddlePanel() {
         JPanel middlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         middlePanel.add(this.board);
         this.organizedPanel.add(middlePanel);
     }
 
+
+    /**
+     * Initialize right panel on to the gaming board
+     * Panel to display dice and various buttons
+     */
     public void initRightPanel() {
         JPanel rightPanel = new JPanel();
 

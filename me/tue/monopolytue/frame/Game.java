@@ -5,10 +5,20 @@ import me.tue.monopolytue.turn.participant.Participant;
 
 import javax.swing.*;
 
+/**
+ * The class game is the frame where the game is played upon.
+ *
+ * 
+ */
+
 public class Game extends JFrame {
 
     private final MenuPanel menuPanel;
     private final GamePanel gamePanel;
+
+    /**
+     * The game is played upon a panel. 
+     */
 
     public Game() {
 
@@ -22,6 +32,9 @@ public class Game extends JFrame {
 
     }
 
+    /**
+     * The metod open renders the starting screen the game settings can be configured.
+     */
 
     public void open() {
         this.add(menuPanel);
@@ -30,12 +43,23 @@ public class Game extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * The metod start starts the actual game board, with the cofigured number of participants.
+     * 
+     * @param participants
+     */
+
     public void start(Participant[] participants) {
         this.remove(menuPanel);
         this.add(this.gamePanel);
         this.repaint();
         this.gamePanel.start(participants);
     }
+
+    /**
+     * The method stop stops the current game and calls the open method
+     * to alter the gamesetting and starting playing a new game.
+     */
 
     public void stop() {
         this.remove(this.gamePanel);

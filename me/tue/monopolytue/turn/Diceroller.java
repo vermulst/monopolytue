@@ -3,6 +3,7 @@ package me.tue.monopolytue.turn;
 import me.tue.monopolytue.board.Board;
 import me.tue.monopolytue.turn.participant.AIOpponent;
 import me.tue.monopolytue.turn.participant.Participant;
+import me.tue.monopolytue.utils.Position;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,6 +15,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * Class that rolls the dices when pressed on the dices.
+ */
 public class Diceroller extends JComponent implements MouseListener {
 
     private int dice1 = 0;
@@ -27,6 +31,11 @@ public class Diceroller extends JComponent implements MouseListener {
 
     private PriceCard priceCard;
 
+    /**
+     * Create a diceroller object.
+     * Needs board to move participants when dice are rolled
+     * @param board
+     */
     public Diceroller(Board board) {
         this.addMouseListener(this);
         try {
@@ -37,6 +46,10 @@ public class Diceroller extends JComponent implements MouseListener {
         this.board = board;
     }
 
+
+    /**
+     * empties the dice
+     */
     public void emptyDice() {
         this.dice1 = 0;
         this.dice2 = 0;
@@ -51,6 +64,10 @@ public class Diceroller extends JComponent implements MouseListener {
         return priceCard;
     }
 
+    /**
+     * Rolls the dices
+     * Move participants accordingly
+     */
     public void rollDice() {
         if (this.isRolled) return;
         Random random = new Random();
@@ -64,6 +81,10 @@ public class Diceroller extends JComponent implements MouseListener {
         this.getPriceCard().updateText();
     }
 
+    /**
+     * Passes the turn onto the next participant
+     * Updates participant index for the next turn
+     */
     public void nextTurn() {
         if (this.checkGameOver()) {
             return;
@@ -137,7 +158,6 @@ public class Diceroller extends JComponent implements MouseListener {
     public Dimension getPreferredSize() {
         return new Dimension(this.getImage().getWidth() * 2, this.getImage().getHeight());
     }
-
 
     @Override
     public void mouseReleased(MouseEvent e) {
