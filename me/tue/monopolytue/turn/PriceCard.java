@@ -27,7 +27,7 @@ public class PriceCard extends JLabel {
         this.setForeground(new Color(5, 3, 3));
 
         LineBorder border1 = new LineBorder(new Color(253, 198, 86), 3, true);
-        EmptyBorder border2 = new EmptyBorder(1,120,1,120);
+        EmptyBorder border2 = new EmptyBorder(1, 50, 1, 50);
         Border newBorder = BorderFactory.createCompoundBorder(border1, border2);
 
         this.setBorder(newBorder);
@@ -42,30 +42,34 @@ public class PriceCard extends JLabel {
         int price = this.getPrice();
         if (price == 0) {
             this.setText("");
+            return;
         }
         Participant owner = this.getCurrentSquare().getOwner();
+        Participant participant = this.getCurrentParticipant();
         if (owner != null) {
-            if (!this.getCurrentSquare().getOwner().equals(owner)) {
-                Square square = this.getCurrentSquare();
-                Participant participant = this.getCurrentSquare().getOwner();
-                int rent = square.getSquareGroup().getRent();
-                this.setText("Square owned by player " + participant.getParticipantID()
-                        + "\n" + "Rent payed: " + rent);
-            } else {
+            if (participant.equals(owner)) {
                 this.setText("This is your square");
-                return;
+            } else {
+                this.setFont(new Font("Tahoma", Font.PLAIN, 20));
+                Square square = this.getCurrentSquare();
+                int rent = square.getSquareGroup().getRent();
+                this.setText("<html>Square owned by player " + owner.getParticipantID()
+                        + "<br>Rent payed: " + rent + "</br></html>");
             }
+            return;
         }
         this.setText("Price: " + this.getPrice());
     }
 
 
     public Participant getCurrentParticipant() {
-        return this.board.getParticipants()[this.diceroller.participantIndex];
+        return this.board.getParticipants()[this.diceroller.getParticipantIndex()];
     }
 
     public int getPrice() {
-        if (!this.diceroller.isRolled) return 0;
+        if (!this.diceroller.isRolled()) {
+            return 0;
+        }
         Square square = this.getCurrentSquare();
         return square.getSquareGroup().getPrice();
     }
@@ -79,42 +83,5 @@ public class PriceCard extends JLabel {
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(200, 150);
-    }
-
-
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        /*g.setFont(new Font("Tahoma", Font.PLAIN, 40));
-        Graphics2D graphics2D = (Graphics2D) g;
-        int price = this.getPrice();
-        if (price == 0) return;
-
-        int borderWidth = 3;
-        graphics2D.setColor(new Color(253, 198, 86));
-        graphics2D.fillRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
-        graphics2D.setColor(new Color(245, 231, 181));
-        graphics2D.fillRect(borderWidth, borderWidth, this.getWidth() - borderWidth - 1, this.getHeight() - borderWidth - 1);
-
-        graphics2D.setColor(new Color(0, 0, 0));
-        Participant owner = this.getCurrentSquare().getOwner();
-        if (owner != null) {
-            if (!this.getCurrentSquare().getOwner().equals(owner)) {
-                Square square = this.getCurrentSquare();
-                Participant participant = this.getCurrentSquare().getOwner();
-                int rent = square.getSquareGroup().getRent();
-                graphics2D.setFont(new Font("Tahoma", Font.PLAIN, 40));
-                graphics2D.setColor(Color.RED);
-                graphics2D.drawString("Square owned by player " + participant.getParticipantID(), 5, this.getHeight() - 60);
-                graphics2D.setFont(new Font("Tahoma", Font.PLAIN, 20));
-                graphics2D.setColor(Color.BLACK);
-                graphics2D.drawString("Rent payed: " + rent, 5, this.getHeight() - 20);
-                return;
-            } else {
-                graphics2D.drawString("This is your square", 5, this.getHeight() - 50);
-                return;
-            }
-        }
-        graphics2D.drawString("Price: " + this.getPrice(), 5, this.getHeight() - 50);*/
     }
 }

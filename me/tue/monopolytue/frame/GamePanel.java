@@ -1,7 +1,8 @@
 package me.tue.monopolytue.frame;
 
 import me.tue.monopolytue.board.Board;
-import me.tue.monopolytue.popup.PopupActionListener;
+import me.tue.monopolytue.popup.GameOverButton;
+import me.tue.monopolytue.popup.PopupButton;
 import me.tue.monopolytue.turn.button.BuyButton;
 import me.tue.monopolytue.turn.Diceroller;
 import me.tue.monopolytue.turn.button.NextTurnButton;
@@ -9,20 +10,20 @@ import me.tue.monopolytue.turn.participant.Participant;
 import me.tue.monopolytue.turn.PriceCard;
 
 import java.awt.*;
+import java.util.function.Consumer;
 
 import javax.swing.*;
 
 public class GamePanel extends JLayeredPane {
     
-    private Board board;
-    private Diceroller diceroller;
-    private BuyButton buyButton;
-    private NextTurnButton nextTurnButton;
-    private PriceCard priceCard;
+    private final Board board;
+    private final Diceroller diceroller;
+    private final BuyButton buyButton;
+    private final NextTurnButton nextTurnButton;
+    private final PriceCard priceCard;
 
     private JPanel organizedPanel;
     private JPanel popupPanel;
-
     private Boolean paused = false;
 
     public GamePanel() {
@@ -50,6 +51,19 @@ public class GamePanel extends JLayeredPane {
         this.add(this.popupPanel, JLayeredPane.PALETTE_LAYER);
     }
 
+    public void stop(Participant winner) {
+        GamePanel gamePanel = this;
+        Consumer<Boolean> endGameEvent = new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) {
+                Game game = (Game) SwingUtilities.windowForComponent(gamePanel);
+                game.stop();
+            }
+        };
+        GameOverButton gameOverButton = new GameOverButton(this, endGameEvent, winner);
+        this.getPopupPanel().add(gameOverButton);
+    }
+
     public void initOrganizedPanel() {
         JPanel organizedPanel = new JPanel();
         FlowLayout flowLayout = new FlowLayout();
@@ -69,10 +83,8 @@ public class GamePanel extends JLayeredPane {
         this.popupPanel = popupPanel;
     }
 
-    public void addPopup(JButton button) {
-        this.popupPanel.add(button);
-        this.paused = true;
-        button.addActionListener(new PopupActionListener(button, this));
+    public void addPopup(PopupButton button) {
+        this.getPopupPanel().add(button);
     }
 
 
@@ -114,20 +126,12 @@ public class GamePanel extends JLayeredPane {
         super.paintComponent(g);
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
-    public Diceroller getDiceroller() {
-        return diceroller;
-    }
-
-    public boolean isPaused() {
-        return paused;
-    }
-
     public void setPaused(boolean paused) {
         this.paused = paused;
+    }
+
+    public Boolean getPaused() {
+        return paused;
     }
 
     public JPanel getPopupPanel() {

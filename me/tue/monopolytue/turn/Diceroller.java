@@ -1,8 +1,8 @@
 package me.tue.monopolytue.turn;
 
 import me.tue.monopolytue.board.Board;
+import me.tue.monopolytue.turn.participant.AIOpponent;
 import me.tue.monopolytue.turn.participant.Participant;
-import me.tue.monopolytue.utils.Position;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,24 +19,15 @@ public class Diceroller extends JComponent implements MouseListener {
     private int dice1 = 0;
     private int dice2 = 0;
 
-    private BufferedImage image;
+    private final BufferedImage image;
 
-    private Board board;
-    public int participantIndex = 0;
-    public boolean isRolled = false;
+    private final Board board;
+    private int participantIndex = 0;
+    private boolean isRolled = false;
 
     private PriceCard priceCard;
 
     public Diceroller(Board board) {
-        this.addMouseListener(this);
-        try {
-            this.image = ImageIO.read(new File("images/dices/emptydice.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        this.board = board;
-    }
-    public Diceroller(Position position, Board board) {
         this.addMouseListener(this);
         try {
             this.image = ImageIO.read(new File("images/dices/emptydice.png"));
@@ -74,6 +65,9 @@ public class Diceroller extends JComponent implements MouseListener {
     }
 
     public void nextTurn() {
+        if (this.checkGameOver()) {
+            return;
+        }
         Participant previousParticipant = this.board.getParticipants()[this.participantIndex];
         this.participantIndex++;
         if (this.participantIndex == this.board.getParticipants().length) {
@@ -81,7 +75,34 @@ public class Diceroller extends JComponent implements MouseListener {
         }
         Participant newParticipant = this.board.getParticipants()[this.participantIndex];
         previousParticipant.setTurn(false);
+
+        if (newParticipant.isBankrupt()) {
+            this.nextTurn();
+            return;
+        }
+
         newParticipant.setTurn(true);
+        if (newParticipant instanceof AIOpponent aiOpponent) {
+            aiOpponent.executeTurn(this);
+        }
+    }
+
+    public boolean checkGameOver() {
+        int participantsLeft = 0;
+        for (int i = 0; i < this.getBoard().getParticipants().length; i++) {
+            if (!this.board.getParticipants()[i].isBankrupt()) {
+                participantsLeft++;
+            }
+        }
+        if (participantsLeft < 2) {
+            for (Participant participant : this.getBoard().getParticipants()) {
+                if (!participant.isBankrupt()) {
+                    this.board.getGamePanel().stop(participant);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
 
@@ -116,6 +137,8 @@ public class Diceroller extends JComponent implements MouseListener {
     public Dimension getPreferredSize() {
         return new Dimension(this.getImage().getWidth() * 2, this.getImage().getHeight());
     }
+
+
     @Override
     public void mouseReleased(MouseEvent e) {
         this.rollDice();
@@ -153,5 +176,21 @@ public class Diceroller extends JComponent implements MouseListener {
 
     public BufferedImage getImage() {
         return image;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public int getParticipantIndex() {
+        return participantIndex;
+    }
+
+    public boolean isRolled() {
+        return isRolled;
+    }
+
+    public void setRolled(boolean rolled) {
+        isRolled = rolled;
     }
 }

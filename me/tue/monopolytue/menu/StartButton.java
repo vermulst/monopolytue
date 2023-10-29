@@ -1,6 +1,7 @@
 package me.tue.monopolytue.menu;
 
 import me.tue.monopolytue.frame.Game;
+import me.tue.monopolytue.turn.participant.AIOpponent;
 import me.tue.monopolytue.turn.participant.Participant;
 import me.tue.monopolytue.turn.participant.Player;
 
@@ -55,7 +56,7 @@ public class StartButton extends JButton implements MouseListener {
         participants[0] = new Player(1);
         participants[0].setTurn(true);
         for (int i = 1; i < participants.length; i++) {
-            participants[i] = new Participant(i + 1);
+            participants[i] = new AIOpponent(i + 1);
         }
 
         game.start(participants);

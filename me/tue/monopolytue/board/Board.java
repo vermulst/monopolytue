@@ -12,26 +12,24 @@ import javax.swing.border.LineBorder;
 
 public class Board extends JPanel {
 
+    private final GamePanel gamePanel;
+    private Participant[] participants;
+    private final Square[] squares;
+    private final String[] squareNames;
 
-    private Square[] squares;
-
-    // must be odd for a proper board
-    private static final int SQUARES_PER_ROW = 7;
-
-    // does not allow more than ((SQUARES_PER_ROW - 3) / 2)
-    private static final int CHANCE_CARDS_PER_ROW = 2;
-
+    private static final int SQUARES_PER_ROW = 7; // must be odd for a proper board
+    private static final int CHANCE_CARDS_PER_ROW = 2; // does not allow more than ((SQUARES_PER_ROW - 3) / 2)
     private static final int IMG_WIDTH = 75;
 
-    private Participant[] participants;
-
-    private GamePanel gamePanel;
 
     public Board(GamePanel gamePanel) {
+        this.squareNames = new String[]{
+                "Vertigo", "Matrix", "Helix", "Auditorium", "Atlas", "MetaForum", "Luna", "Neuron", "Flux", "Gemini", "Fenix",
+                "Ceres", "Hubble", "Limbopad", "De Zaale", "Fontys", "TUE", "Eindhoven", "SSC", "KvK"
+        };
         this.gamePanel = gamePanel;
         this.squares = new Square[(SQUARES_PER_ROW) * 4 + 4];
         this.placeSquares();
-
         LineBorder border1 = new LineBorder(new Color(0, 0, 0), 2, true);
         this.setBorder(border1);
         this.setLayout(new GridBagLayout());
@@ -54,7 +52,9 @@ public class Board extends JPanel {
             squares[i].render(g, this);
         }
         for (int i = 0; i < participants.length; i++) {
-            if (participants[i] == null) continue;
+            if (participants[i] == null || participants[i].isBankrupt()) {
+                continue;
+            }
             participants[i].renderPawn(g, this);
         }
     }
@@ -67,23 +67,28 @@ public class Board extends JPanel {
         int startY = (int) (bottomRightCoordinate.getHeight() - (IMG_WIDTH * 2));
         Location startLocation = new Location(startX, startY);
 
+        int nameIndex = 0;
 
-        double chanceCardInterval = ((double) SQUARES_PER_ROW / (double) CHANCE_CARDS_PER_ROW) / ((-0.723 * Math.log(CHANCE_CARDS_PER_ROW)) + 2);
+        double squareChanceCardRatio = ((double) SQUARES_PER_ROW / (double) CHANCE_CARDS_PER_ROW);
+        double denominator = ((-0.723 * Math.log(CHANCE_CARDS_PER_ROW)) + 2);
+        double chanceCardInterval = squareChanceCardRatio / denominator;
 
         for (int i = 0; i < 4; i++) {
             startLocation.setDegreeRotation(i * 90);
-            this.squares[i * ((SQUARES_PER_ROW) + 1)] = new Square(startLocation.clone(), SquareGroup.CORNER);
+            this.squares[i * ((SQUARES_PER_ROW) + 1)] = new Square("", startLocation.clone(), SquareGroup.CORNER);
 
             if (i > 1) {
                 startLocation.add(vector);
             }
 
             for (int j = 0; j < SQUARES_PER_ROW; j++) {
+                int squareIndex = i * ((SQUARES_PER_ROW) + 1) + j + 1;
                 startLocation.add(vector);
                 if (((j % (int) Math.round(chanceCardInterval)) == 0) && (j != 0) && (j != SQUARES_PER_ROW - 1)) {
-                    this.squares[i * ((SQUARES_PER_ROW) + 1) + j + 1] = new Square(startLocation.clone(), SquareGroup.CHANCE);
+                    this.squares[squareIndex] = new Square("", startLocation.clone(), SquareGroup.CHANCE);
                 } else {
-                    this.squares[i * ((SQUARES_PER_ROW) + 1) + j + 1] = new Square(startLocation.clone(), SquareGroup.values()[i]);
+                    this.squares[squareIndex] = new Square(squareNames[nameIndex], startLocation.clone(), SquareGroup.values()[i]);
+                    nameIndex++;
                 }
             }
 

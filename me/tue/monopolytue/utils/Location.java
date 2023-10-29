@@ -1,8 +1,7 @@
 package me.tue.monopolytue.utils;
 
-import java.util.Objects;
 
-public class Location extends Position{
+public class Location extends Position {
 
 
     private int degreeRotation;
@@ -20,11 +19,6 @@ public class Location extends Position{
         location.setDegreeRotation(this.getDegreeRotation());
         return location;
     }
-
-    public Location difference(Location location) {
-        return new Location(this.getX() - location.getX(), this.getY() - location.getY());
-    }
-
 
     public int getDegreeRotation() {
         return degreeRotation;

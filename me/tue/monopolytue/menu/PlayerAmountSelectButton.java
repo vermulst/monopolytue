@@ -10,8 +10,8 @@ import java.awt.event.MouseListener;
 
 public class PlayerAmountSelectButton extends JButton implements MouseListener {
 
-    private MenuPanel menuPanel;
-    private int num;
+    private final MenuPanel menuPanel;
+    private final int num;
 
     public PlayerAmountSelectButton(MenuPanel menuPanel, int num) {
         super(String.valueOf(num));

@@ -7,14 +7,13 @@ import javax.swing.*;
 
 public class Game extends JFrame {
 
-    private MenuPanel menuPanel;
-    private GamePanel gamePanel;
+    private final MenuPanel menuPanel;
+    private final GamePanel gamePanel;
 
     public Game() {
 
         super("Monopoly");
         this.setSize(1920, 1080);
-
 
         this.gamePanel = new GamePanel();
         this.menuPanel = new MenuPanel(this);
@@ -35,22 +34,12 @@ public class Game extends JFrame {
         this.remove(menuPanel);
         this.add(this.gamePanel);
         this.repaint();
-        System.out.println("test");
         this.gamePanel.start(participants);
     }
 
     public void stop() {
-        this.add(menuPanel);
         this.remove(this.gamePanel);
+        this.add(menuPanel);
         this.repaint();
-    }
-
-
-    public MenuPanel getMenuPanel() {
-        return menuPanel;
-    }
-
-    public GamePanel getGamePanel() {
-        return gamePanel;
     }
 }

@@ -2,6 +2,7 @@ package me.tue.monopolytue.board;
 
 import me.tue.monopolytue.popup.Chancecard;
 import me.tue.monopolytue.turn.participant.Participant;
+import me.tue.monopolytue.turn.participant.Player;
 import me.tue.monopolytue.utils.Location;
 
 import java.awt.*;
@@ -17,10 +18,12 @@ public class Square {
 
 
     private Participant owner;
-    private SquareGroup squareGroup;
-    private Location location;
+    private final SquareGroup squareGroup;
+    private final Location location;
+    private final String name;
 
-    public Square(Location location, SquareGroup squareGroup) {
+    public Square(String name, Location location, SquareGroup squareGroup) {
+        this.name = name;
         this.location = location;
         this.squareGroup = squareGroup;
     }
@@ -32,8 +35,10 @@ public class Square {
 
     public void onLand(Board board, Participant participant) {
         if (this.squareGroup.equals(SquareGroup.CHANCE)) {
-            Chancecard chancecard = new Chancecard();
-            board.getGamePanel().addPopup(chancecard);
+            Chancecard chancecard = new Chancecard(board.getGamePanel());
+            if (participant instanceof Player) {
+                board.getGamePanel().addPopup(chancecard);
+            }
             chancecard.pullChancecard(participant);
         }
         if (this.getOwner() != null && this.getOwner() != participant) {
@@ -47,14 +52,23 @@ public class Square {
      */
     public void render(Graphics g, JComponent component) {
         BufferedImage image = this.getImage();
+        this.writeTextOnImage(image, this.getName());
         image = this.rotateImageByDegrees(image, this.getLocation().getDegreeRotation(), component);
         if (this.getOwner() != null) {
-            image = replaceColor(image, Color.WHITE, this.getOwner().getColor());
+            image = this.replaceColor(image, Color.WHITE, this.getOwner().getColor());
         }
         g.drawImage(image, (int) this.location.getX(), (int) this.location.getY(), component);
     }
 
-    public static BufferedImage replaceColor(BufferedImage image, Color targetColor, Color replacementColor) {
+    public void writeTextOnImage(BufferedImage image, String text) {
+        Graphics2D graphics2D = (Graphics2D) image.getGraphics();
+        graphics2D.setColor(new Color(0, 0, 0));
+        graphics2D.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        graphics2D.drawString(text, 3, this.getImage().getHeight() - 3);
+        graphics2D.dispose();
+    }
+
+    public BufferedImage replaceColor(BufferedImage image, Color targetColor, Color replacementColor) {
         int width = image.getWidth();
         int height = image.getHeight();
         BufferedImage modifiedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -81,8 +95,7 @@ public class Square {
             file = new File("images/chancecard.png");
         }
         try {
-            BufferedImage image = ImageIO.read(file);
-            return image;
+            return ImageIO.read(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -124,5 +137,9 @@ public class Square {
 
     public SquareGroup getSquareGroup() {
         return squareGroup;
+    }
+
+    public String getName() {
+        return name;
     }
 }

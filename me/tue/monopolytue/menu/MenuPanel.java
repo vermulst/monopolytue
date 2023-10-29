@@ -13,43 +13,36 @@ public class MenuPanel extends JPanel {
 
 
     private int selectedPlayerAmount;
-    private StartButton startButton;
     private JPanel selectingPlayerPanel;
 
     public MenuPanel(Game game) {
 
         this.selectedPlayerAmount = 4;
 
-        this.startButton = new StartButton(game, this);
-        this.add(this.startButton);
+        StartButton startButton = new StartButton(game, this);
+        startButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         this.setSize(1920, 1080);
 
-        BoxLayout boxLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
-        this.setLayout(boxLayout);
+        BoxLayout gridBagLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
+        this.setLayout(gridBagLayout);
 
-        this.add(Box.createRigidArea(new Dimension(100,200)));
-        this.add(this.startButton);
-        this.add(Box.createRigidArea(new Dimension(0,40)));
+        JComponent emptyComponent = (JComponent) Box.createRigidArea(new Dimension(startButton.getWidth(),100));
+        JComponent emptyComponent1 = (JComponent) Box.createRigidArea(new Dimension(0,40));
+
+        this.add(emptyComponent);
+        this.add(startButton);
+        this.add(emptyComponent1);
         this.initPlayerAmountSelect();
+
     }
 
     public void initPlayerAmountSelect() {
         this.selectingPlayerPanel = new JPanel();
 
-        JLabel text = new JLabel("Player amount: ");
-        text.setFont(new Font("Tahoma", Font.PLAIN, 40));
-        text.setOpaque(true);
-        text.setBackground(new Color(245, 231, 181));
-        text.setForeground(new Color(5, 3, 3));
-        LineBorder border1 = new LineBorder(new Color(253, 198, 86), 3, true);
-        EmptyBorder border2 = new EmptyBorder(1,2,1,2);
-        Border newBorder = BorderFactory.createCompoundBorder(border1, border2);
-        text.setBorder(newBorder);
+        this.selectingPlayerPanel.add(this.getPlayerSelectTextLabel());
 
-        this.selectingPlayerPanel.add(text);
-
-        for (int i = 0; i < 4; i++) {
+        for (int i = 1; i < 4; i++) {
             PlayerAmountSelectButton button = new PlayerAmountSelectButton(this, (i + 1));
             this.selectingPlayerPanel.add(button);
         }
@@ -57,12 +50,22 @@ public class MenuPanel extends JPanel {
     }
 
 
-    public int getSelectedPlayerAmount() {
-        return selectedPlayerAmount;
+    public JLabel getPlayerSelectTextLabel() {
+        JLabel textLabel = new JLabel("Player amount: ");
+        textLabel.setFont(new Font("Tahoma", Font.PLAIN, 40));
+        textLabel.setOpaque(true);
+        textLabel.setBackground(new Color(245, 231, 181));
+        textLabel.setForeground(new Color(5, 3, 3));
+        LineBorder border1 = new LineBorder(new Color(253, 198, 86), 3, true);
+        EmptyBorder border2 = new EmptyBorder(1,2,1,2);
+        Border newBorder = BorderFactory.createCompoundBorder(border1, border2);
+        textLabel.setBorder(newBorder);
+        return textLabel;
     }
 
-    public StartButton getStartButton() {
-        return startButton;
+
+    public int getSelectedPlayerAmount() {
+        return selectedPlayerAmount;
     }
 
     public void setSelectedPlayerAmount(int selectedPlayerAmount) {

@@ -1,6 +1,5 @@
 package me.tue.monopolytue.utils;
 
-import java.awt.*;
 import java.util.Objects;
 
 public class Position {
@@ -26,17 +25,6 @@ public class Position {
     public void add(Position position) {
         this.x += position.getX();
         this.y += position.getY();
-    }
-
-    public void add(double x, double y) {
-        this.x += x;
-        this.y += y;
-    }
-
-    public double getDistance(Location location) {
-        double y = Math.abs(location.getY() - this.getY());
-        double x = Math.abs(location.getX() - this.getX());
-        return Math.hypot(x, y);
     }
 
     public double getX() {

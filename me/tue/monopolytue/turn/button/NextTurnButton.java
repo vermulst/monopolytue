@@ -1,6 +1,8 @@
 package me.tue.monopolytue.turn.button;
 
 import me.tue.monopolytue.turn.Diceroller;
+import me.tue.monopolytue.turn.participant.Participant;
+import me.tue.monopolytue.turn.participant.Player;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -13,7 +15,7 @@ import javax.swing.border.LineBorder;
 
 public class NextTurnButton extends JButton implements MouseListener {
     
-    public Diceroller diceroller;
+    private final Diceroller diceroller;
 
     public NextTurnButton(Diceroller diceroller) {
         super("Next Turn");
@@ -33,13 +35,23 @@ public class NextTurnButton extends JButton implements MouseListener {
     }
 
     public void onClick() {
-        if (diceroller.isRolled) {
-            this.diceroller.isRolled = false;
-            this.diceroller.nextTurn();
-            this.diceroller.emptyDice();
-            this.diceroller.getPriceCard().updateText();
+        if (diceroller.isRolled()) {
+            diceroller.setRolled(false);
+            int indexNew = this.diceroller.getParticipantIndex() + 1;
+            if (indexNew == diceroller.getBoard().getParticipants().length) {
+                indexNew--;
+            }
+            Participant oldParticipant = diceroller.getBoard().getParticipants()[this.getDiceroller().getParticipantIndex()];
+            Participant newParticipant = diceroller.getBoard().getParticipants()[indexNew];
+            if (oldParticipant instanceof Player || newParticipant instanceof Player) {
+                diceroller.nextTurn();
+                diceroller.emptyDice();
+                diceroller.getPriceCard().updateText();
+            }
         }
     }
+
+
 
     @Override
     public Dimension getPreferredSize() {
@@ -66,5 +78,9 @@ public class NextTurnButton extends JButton implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    public Diceroller getDiceroller() {
+        return diceroller;
     }
 }

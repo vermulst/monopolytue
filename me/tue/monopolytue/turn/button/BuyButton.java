@@ -41,18 +41,15 @@ public class BuyButton extends JButton implements MouseListener {
     }
 
     public void buyButton() {
-        if (!this.diceroller.isRolled) return;
-        Participant participant = board.getParticipants()[this.diceroller.participantIndex];
+        if (!this.diceroller.isRolled()) {
+            return;
+        }
+        Participant participant = board.getParticipants()[this.diceroller.getParticipantIndex()];
         Square square = participant.getCurrentSquare(board);
         if (square.getOwner() != null) {
             return;
         }
-
-        if (participant.balance >= square.getSquareGroup().getPrice()) {
-            participant.removeFromBalance(square.getSquareGroup().getPrice());
-            square.setOwner(participant);
-            board.repaint();
-        }
+        participant.buySquare(square, board);
     }
 
     @Override
@@ -84,5 +81,7 @@ public class BuyButton extends JButton implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
     }
+
+
 
 }

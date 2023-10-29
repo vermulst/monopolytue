@@ -11,7 +11,7 @@ public enum SquareGroup {
     CORNER(0);
 
 
-    private int price;
+    private final int price;
     SquareGroup(int price) {
         this.price = price;
     }
