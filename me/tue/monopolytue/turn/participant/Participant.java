@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.AttributedString;
 import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The class Participant monitors the balance, position on the board, bankruptcy

@@ -4,7 +4,7 @@ import me.tue.monopolytue.board.Board;
 import me.tue.monopolytue.board.Square;
 import me.tue.monopolytue.turn.DiceRoller;
 
-public class AIOpponent extends Participant{
+public class AIOpponent extends Participant {
     public AIOpponent(int id) {
         super(id);
     }
